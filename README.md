@@ -171,3 +171,10 @@ To deploy the smart contracts, simply deploy the `Deployer` contract, which will
 
 ---
 
+## ✅ Deployed and Verified @ Sepolia Arbitrum for testing
+
+
+- **Deployer.sol** - [0x2B1D9D9B8f68767812158bA530fae07aDE2A8CE0](https://sepolia.arbiscan.io/address/0x2B1D9D9B8f68767812158bA530fae07aDE2A8CE0)
+- **IGAI.sol** - [0xD48986eD0152D817D223B7f9d68fbcE2F81b08BF](https://sepolia.arbiscan.io/address/0xD48986eD0152D817D223B7f9d68fbcE2F81b08BF)
+- **InsightData.sol** - [0x6f7e6f18a347621f9B0874f4E79Cad54627762fa](https://sepolia.arbiscan.io/address/0x6f7e6f18a347621f9B0874f4E79Cad54627762fa)
+- **Rewards.sol** - [0x44b55cf49084e9cb47d8f563800a51f20106fb1a](https://sepolia.arbiscan.io/address/0x44b55cf49084e9cb47d8f563800a51f20106fb1a)
