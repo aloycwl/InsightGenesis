@@ -180,7 +180,7 @@ To deploy the smart contracts, simply deploy the `Deployer` contract, which will
 
 ## ✅ Deployed and Verified @ BNB Smart Chain Testnet for testing
 
-- **Deployer.sol** - [0x2B1D9D9B8f68767812158bA530fae07aD0x1C0eC481203a6C6637fFD910F4eC22AA4950Ca06E2A8CE0](https://testnet.bscscan.com/address/0x1C0eC481203a6C6637fFD910F4eC22AA4950Ca06)
+- **Deployer.sol** - [0x1C0eC481203a6C6637fFD910F4eC22AA4950Ca06](https://testnet.bscscan.com/address/0x1C0eC481203a6C6637fFD910F4eC22AA4950Ca06)
 - **IGAI.sol** - [0x99CE3aD6DA03eEa2216CC9e05378277f237669f1](https://testnet.bscscan.com/address/0x99CE3aD6DA03eEa2216CC9e05378277f237669f1)
 - **InsightData.sol** - [0x277834fAe80223e9830d203e1cEc7c461802CdCA](https://testnet.bscscan.com/address/0x277834fAe80223e9830d203e1cEc7c461802CdCA)
 - **Rewards.sol** - [0x953b3eBeCC5347274293444D8E97D919914994aA](https://testnet.bscscan.com/address/0x953b3eBeCC5347274293444D8E97D919914994aA)
