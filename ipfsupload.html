@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Upload to IPFS</title>
+</head>
+<body>
+
+<h1>Upload File to IPFS</h1>
+<input type="file" id="fileInput" />
+<button onclick="uploadFile()">Upload</button>
+<p id="result"></p>
+
+<script>
+    async function uploadFile() {
+        const fileInput = document.getElementById('fileInput');
+        const file = fileInput.files[0];
+
+        if (!file) {
+            alert("Please select a file to upload.");
+            return;
+        }
+
+        const formData = new FormData();
+        formData.append("file", file);
+
+        try {
+            const response = await fetch("https://ipfs.infura.io:5001/api/v0/add", {
+                method: "POST",
+                body: formData
+            });
+
+            const data = await response.json();
+            if (data.Hash) {
+                document.getElementById('result').innerText = 'File uploaded successfully! CID: ' + data.Hash;
+                console.log('CID:', data.Hash);
+            } else {
+                alert('Error uploading file');
+            }
+        } catch (error) {
+            console.error('Error:', error);
+            alert('An error occurred while uploading the file.');
+        }
+    }
+</script>
+
+</body>
