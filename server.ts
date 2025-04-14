@@ -2,6 +2,7 @@ import express from "express";
 import fs from "fs/promises";
 import multer from "multer";
 import { createReadStream } from "fs";
+import { ethers } from "ethers";
 import { PinataSDK } from "pinata";
 import * as dotenv from "dotenv";
 
