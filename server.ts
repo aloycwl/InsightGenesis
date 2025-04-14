@@ -29,4 +29,6 @@ ap.post("/upload", multer({ dest: "uploads/" }).single("file"), async (req, res)
   }
 });
 
-ap.listen(80, () => { });
+ap.listen(80, () => {
+  console.log("Started")
+});
