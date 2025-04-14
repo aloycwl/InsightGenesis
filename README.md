@@ -12,8 +12,12 @@ node server.ts
 
 ## Upload Endpoint (via CURL)
 
-```bash
 You can upload a file along with an address using the following curl command:
+
+```bash
+curl -X POST http://localhost/upload \
+  -F "file=@./example.json" \
+  -F "addr=0xA34357486224151dDfDB291E13194995c22Df505"
 ```
 
 # Insight Genesis Smart Contracts
