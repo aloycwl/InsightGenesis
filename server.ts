@@ -9,9 +9,8 @@ import * as dotenv from "dotenv";
 dotenv.config();
 
 const ap = express();
-const ul = multer({ dest: "uploads/" });
 
-ap.post("/upload", ul.single("file"), async (req, res) => {
+ap.post("/upload", multer({ dest: "uploads/" }).single("file"), async (req, res) => {
   try {
     res.send((
       await new PinataSDK({
