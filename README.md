@@ -17,7 +17,7 @@ You can upload a file along with an address using the following curl command:
 ```bash
 curl -X POST http://localhost/upload \
   -F "file=@./example.json" \
-  -F "addr=0xA34357486224151dDfDB291E13194995c22Df505"
+  -F "addr=0x2e0aCE0129E66A36cee92c5146C73Ec4874d0109"
 ```
 
 # Insight Genesis Smart Contracts
