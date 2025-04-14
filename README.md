@@ -7,7 +7,7 @@ This project enables users to upload files and associate them with specific addr
 To start the server, run:
 
 ```bash
-node server.ts
+npm start
 ```
 
 ## Upload Endpoint (via CURL)
@@ -19,6 +19,8 @@ curl -X POST http://localhost/upload \
   -F "file=@./example.json" \
   -F "addr=0x2e0aCE0129E66A36cee92c5146C73Ec4874d0109"
 ```
+
+A success transaction will return a code 200.
 
 # Insight Genesis Smart Contracts
 
