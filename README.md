@@ -1,3 +1,21 @@
+# Insight Genesis Upload Analysis
+
+This project enables users to upload files and associate them with specific addresses for further analysis on the Insight Genesis platform.
+
+## Activate the Server
+
+To start the server, run:
+
+```bash
+node server.ts
+```
+
+## Upload Endpoint (via CURL)
+
+```bash
+You can upload a file along with an address using the following curl command:
+```
+
 # Insight Genesis Smart Contracts
 
 ## ERC-20 Token Contract (IGAI.sol)
