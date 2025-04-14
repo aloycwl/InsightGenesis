@@ -4,7 +4,7 @@
   "description": "This contract implements standard token functions with additional features:",
   "main": "index.js",
   "scripts": {
-    "start": "node server.js"
+    "start": "node --loader ts-node/esm server.ts"
   },
   "repository": {
     "type": "git",
