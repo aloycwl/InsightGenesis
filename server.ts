@@ -14,7 +14,7 @@ ap.post("/upload", ul.single("file"), async (req, res) => {
   try {
     res.send((
       await new PinataSDK({
-        pinataJwt: process.env.PINATA_JWT!,
+        pinataJwt: process.env.PJ!,
         pinataGateway: "amber-implicit-jay-463.mypinata.cloud",
       }).upload.public.file(
         new Blob([await fs.readFile(req.file.path)],
