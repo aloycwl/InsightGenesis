@@ -1,3 +1,4 @@
+.env
 .deps
 .prettierrc.json
 node_modules
