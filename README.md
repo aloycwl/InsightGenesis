@@ -23,9 +23,7 @@ curl -X POST https://insightgenesis.onrender.com/upload \
 
 Windows command
 ```powershell
-curl -X POST https://insightgenesis.onrender.com/upload ^
-  -F "file=@example.json" ^
-  -F "addr=0x2e0aCE0129E66A36cee92c5146C73Ec4874d0109"
+curl -X POST https://insightgenesis.onrender.com/upload -F "file=@example.json" -F "addr=0x2e0aCE0129E66A36cee92c5146C73Ec4874d0109"
 ```
 
 A success transaction will return a code 200.
