@@ -15,8 +15,14 @@ npm start
 You can upload a file along with an address using the following curl command:
 
 ```bash
-curl -X POST http://localhost/upload \
+curl -X POST https://insightgenesis.onrender.com/upload \
   -F "file=@./example.json" \
+  -F "addr=0x2e0aCE0129E66A36cee92c5146C73Ec4874d0109"
+```
+
+```powershell
+curl -X POST https://insightgenesis.onrender.com/upload ^
+  -F "file=@example.json" ^
   -F "addr=0x2e0aCE0129E66A36cee92c5146C73Ec4874d0109"
 ```
 
