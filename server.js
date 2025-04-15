@@ -18,12 +18,14 @@ const ap = express();
 const pv = new ethers.JsonRpcProvider("https://data-seed-prebsc-1-s1.bnbchain.org:8545/");
 ap.post("/upload", multer({ dest: "uploads/" }).single("file"), (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const tx = yield new ethers.Contract("0xF70068E66527294f6073bF7a39414E2B12a03C8f", ["function store(string calldata, address) external"], pv).
-            connect(new ethers.Wallet(process.env.PK, pv)).
-            store((yield new PinataSDK({
+        const tx = yield new ethers.Contract("0xF70068E66527294f6073bF7a39414E2B12a03C8f", ["function store(string calldata, address) external"], pv)
+            .connect(new ethers.Wallet(process.env.PK, pv))
+            .store((yield new PinataSDK({
             pinataJwt: process.env.PJ,
             pinataGateway: "amber-implicit-jay-463.mypinata.cloud",
-        }).upload.public.file(new Blob([yield fs.readFile(req.file.path)], { type: req.file.mimetype }))).cid, req.body.addr);
+        }).upload.public.file(new Blob([yield fs.readFile(req.file.path)], {
+            type: req.file.mimetype,
+        }))).cid, req.body.addr);
         yield tx.wait();
         res.send("200");
     }
