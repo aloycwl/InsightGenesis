@@ -6,16 +6,16 @@ import {IERC20} from "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import {IInsightData} from "./IInsightData.sol";
 
 contract Rewards is Ownable {
-    IERC20 public igai;
+    IERC20 public igair;
     IInsightData public insightData;
-    uint256 public rewardAmount;
+    uint256 public rewardAmount = 1 ether;
     mapping(address => uint256) public rewardsValueClaimed;
     mapping(address => uint256) public rewardsCountClaimed;
 
-    constructor() Ownable(msg.sender) {}
+    constructor() payable Ownable(msg.sender) {}
 
-    function setIGAI(address _address) external onlyOwner {
-        igai = IERC20(_address);
+    function setIGAIr(address _address) external onlyOwner {
+        igair = IERC20(_address);
     }
 
     function setInsightData(address _address) external onlyOwner {
@@ -36,7 +36,7 @@ contract Rewards is Ownable {
             rewardsValueClaimed[msg.sender] += claimingAmount;
             ++rewardsCountClaimed[msg.sender];
 
-            igai.transfer(msg.sender, claimingAmount);
+            igair.transfer(msg.sender, claimingAmount);
         }
     }
 }
