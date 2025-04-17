@@ -7,11 +7,11 @@ import * as dotenv from "dotenv";
 
 dotenv.config();
 
-const ap = express();
-const ul = multer({ dest: "uploads/" });
-const pv = new ethers.JsonRpcProvider(
-  "https://data-seed-prebsc-1-s1.bnbchain.org:8545/",
-);
+const ap = express(),
+  ul = multer({ dest: "uploads/" }),
+  pv = new ethers.JsonRpcProvider(
+    "https://data-seed-prebsc-1-s1.bnbchain.org:8545/",
+  );
 
 ap.post("/upload", ul.single("file"), async (req, res) => {
   try {
