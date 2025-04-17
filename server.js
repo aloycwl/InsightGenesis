@@ -26,7 +26,7 @@ ap.post("/upload", ul.single("file"), async (req, res) => {
     );
 
     const co = new ethers.Contract(
-      "0xF70068E66527294f6073bF7a39414E2B12a03C8f",
+      "0xAC2E907D1d7348F22770Ff1D693bF03d01847991",
       ["function store(string calldata, address) external"],
       pv,
     );
