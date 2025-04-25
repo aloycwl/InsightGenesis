@@ -5,11 +5,11 @@ import {IGAI} from "./IGAIr.sol";
 import {InsightData} from "./InsightData.sol";
 
 contract Deployer {
-    IGAI public igai;
     InsightData public insightData;
 
     constructor() {
-        (igai, insightData) = (new IGAI(), new InsightData());
+        IGAI igai = new IGAI();
+        insightData = new InsightData();
 
         /*** Mock USDT, to be remove in deploy ***/
         IGAI usdt = new IGAI();
