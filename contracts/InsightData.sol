@@ -8,11 +8,17 @@ contract InsightData is Ownable {
     constructor() payable Ownable(msg.sender) {}
 
     uint256 public count;
-    uint256 public rewardAmount = 1 ether;
+    uint256 public rewardAmountFree = 10 ether;
+    uint256 public rewardAmountPaid = 100 ether;
+    uint256 public upgradeFee = 5 ether;
+    uint256 public referralAmountFree = 5 ether;
+    uint256 public referralAmountPaid = 50 ether;
     mapping(address => string) public data;
     mapping(uint256 => address) public user;
+    mapping(address => address) public referral;
     mapping(address => uint256) public userCount;
     IERC20 public igair;
+    IERC20 public iusdt;
     event NewData(uint256 indexed, string, address);
 
     function store(string calldata _data, address _account) external {
@@ -22,13 +28,28 @@ contract InsightData is Ownable {
             "Record existed"
         );
 
-        igair.transfer(_account, rewardAmount);
+        _sendRewards(_account, rewardAmountFree, referralAmountFree);
 
         _storage(_data, _account);
     }
 
-    function update(string calldata _data) external {
+    function upgrade(string calldata _data) external {
+        iusdt.transferFrom(msg.sender, owner(), upgradeFee);
+
+        _sendRewards(msg.sender, rewardAmountPaid, referralAmountPaid);
+
         _storage(_data, msg.sender);
+    }
+
+    function _sendRewards(
+        address _account,
+        uint256 _amountRewards,
+        uint256 _amountReferral
+    ) private {
+        igair.transfer(_account, _amountRewards);
+        address _referral = referral[_account];
+        if (_referral != address(0))
+            igair.transfer(referral[_account], _amountReferral);
     }
 
     function _storage(string calldata _data, address _account) private {
@@ -41,11 +62,35 @@ contract InsightData is Ownable {
         }
     }
 
+    function setReferral(address _referee, address _referral)
+        external
+        onlyOwner
+    {
+        require(referral[_referee] == address(0), "Record existed");
+        referral[_referee] = _referral;
+    }
+
     function setIGAIr(address _address) external onlyOwner {
         igair = IERC20(_address);
     }
 
-    function setAmount(uint256 _rewardAmount) external onlyOwner {
-        rewardAmount = _rewardAmount;
+    function setUSDT(address _address) external onlyOwner {
+        iusdt = IERC20(_address);
+    }
+
+    function setRewardFree(uint256 _amount) external onlyOwner {
+        rewardAmountFree = _amount;
+    }
+
+    function setRewardPaid(uint256 _amount) external onlyOwner {
+        rewardAmountPaid = _amount;
+    }
+
+    function setReferralFree(uint256 _amount) external onlyOwner {
+        referralAmountPaid = _amount;
+    }
+
+    function setReferralPaid(uint256 _amount) external onlyOwner {
+        referralAmountFree = _amount;
     }
 }
