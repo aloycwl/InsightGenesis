@@ -8,7 +8,8 @@ export async function setPaid(re) {
     pv,
   );
 
-  const wl = new ethers.Wallet(process.env.PK, pv);
-  const tx = await co.connect(wl).setPaid(re.body.addr);
+  const tx = await co
+    .connect(new ethers.Wallet(process.env.PK, pv))
+    .setPaid(re.body.addr);
   await tx.wait();
 }

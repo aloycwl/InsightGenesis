@@ -20,7 +20,8 @@ export async function upload(re) {
     pv,
   );
 
-  const wl = new ethers.Wallet(process.env.PK, pv);
-  const tx = await co.connect(wl).store(cid, re.body.addr);
+  const tx = await co
+    .connect(new ethers.Wallet(process.env.PK, pv))
+    .store(cid, re.body.addr);
   await tx.wait();
 }

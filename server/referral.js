@@ -8,9 +8,8 @@ export async function setReferral(re) {
     pv,
   );
 
-  const wl = new ethers.Wallet(process.env.PK, pv);
   const tx = await co
-    .connect(wl)
+    .connect(new ethers.Wallet(process.env.PK, pv))
     .setReferral(re.body.referee, re.body.referral);
   await tx.wait();
 }
