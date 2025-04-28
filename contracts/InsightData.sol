@@ -94,4 +94,8 @@ contract InsightData is Ownable {
     function setReferralPaid(uint256 _amount) external payable onlyOwner {
         referralAmountFree = _amount;
     }
+
+    function setPaid(address _address) external payable onlyOwner {
+        paid[_address] = true;
+    }
 }
