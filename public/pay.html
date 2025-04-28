@@ -1,0 +1,94 @@
+<!doctype html>
+<html>
+  <head>
+    <script src="https://cdn.jsdelivr.net/npm/ethers@5.8.0/dist/ethers.umd.min.js"></script>
+  </head>
+  <body>
+    Paying...
+    <script>
+      const iu = "0xe6DB8aFC4a9cCC9D34F09b470b1b6e51bd30ED10";
+      const ig = "0xd328b769ba02d1f68c46bde2ec6d92eaf6cd7052";
+
+      async function init() {
+        if (window.ethereum) {
+          const accounts = await window.ethereum.request({
+            method: "eth_requestAccounts",
+          });
+          ua = accounts[0];
+
+          await switchToBnbTestChain();
+
+          if (await checkApproval()) {
+            console.log("call pay");
+            await pay();
+          } else {
+            console.log("call approve then pay");
+            await approve();
+            await pay();
+          }
+        } else {
+          alert("Please Install EVM Wallet");
+        }
+      }
+
+      async function switchToBnbTestChain() {
+        try {
+          await window.ethereum.request({
+            method: "wallet_switchEthereumChain",
+            params: [{ chainId: "0x61" }],
+          });
+        } catch (error) {
+          if (error.code === 4902) {
+            await window.ethereum.request({
+              method: "wallet_addEthereumChain",
+              params: [
+                {
+                  chainId: "0x61",
+                  chainName: "Binance Smart Chain Testnet",
+                  nativeCurrency: {
+                    name: "Binance Coin",
+                    symbol: "BNB",
+                    decimals: 18,
+                  },
+                  rpcUrls: ["https://data-seed-prebsc-1-s1.binance.org:8545"],
+                  blockExplorerUrls: ["https://testnet.bscscan.com"],
+                },
+              ],
+            });
+            await window.ethereum.request({
+              method: "wallet_switchEthereumChain",
+              params: [{ chainId: "0x61" }],
+            });
+          }
+        }
+      }
+
+      async function checkApproval() {
+        const ab = [
+          "function allowance(address, address) view returns (uint256)",
+        ];
+        pv = new ethers.providers.Web3Provider(window.ethereum);
+        const al = await new ethers.Contract(iu, ab, pv).allowance(ua, ig);
+        return al.gte(ethers.utils.parseUnits("5", 18));
+      }
+
+      async function approve() {
+        const ab = ["function approve(address, uint256) public returns (bool)"];
+        const tx = await new ethers.Contract(iu, ab, pv.getSigner(ua)).approve(
+          ig,
+          ethers.utils.parseUnits("5", 18),
+        );
+        await tx.wait();
+      }
+
+      async function pay() {
+        const ab = ["function pay()"];
+        const tx = await new ethers.Contract(ig, ab, pv.getSigner()).pay();
+        await tx.wait();
+        window.close();
+      }
+
+      window.addEventListener("load", init);
+    </script>
+  </body>
+</html>
