@@ -9,10 +9,10 @@ contract InsightData is Ownable {
 
     uint256 public count;
     uint256 public rewardAmountFree = 10 ether;
-    uint256 public rewardAmountPaid = 100 ether;
-    uint256 public fee = 5 ether;
     uint256 public referralAmountFree = 5 ether;
+    uint256 public rewardAmountPaid = 100 ether;
     uint256 public referralAmountPaid = 50 ether;
+    uint256 public fee = 5 ether;
     mapping(address => string) public data;
     mapping(uint256 => address) public user;
     mapping(address => address) public referral;
@@ -24,9 +24,8 @@ contract InsightData is Ownable {
 
     function store(string calldata _data, address _account) external payable {
         if (paid[_account]) {
-            paid[_account] = false;
-
             _sendRewards(_account, rewardAmountPaid, referralAmountPaid);
+            paid[_account] = false;
         } else {
             // Free user can only do once
             require(bytes(data[_account]).length == 0, "Record existed");
@@ -48,8 +47,7 @@ contract InsightData is Ownable {
     ) private {
         igair.transfer(_account, _amountRewards);
         address _referral = referral[_account];
-        if (_referral != address(0))
-            igair.transfer(referral[_account], _amountReferral);
+        if (_referral != address(0)) igair.transfer(_referral, _amountReferral);
     }
 
     function _storage(string calldata _data, address _account) private {
