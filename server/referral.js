@@ -10,6 +10,6 @@ export async function setReferral(re) {
 
   const tx = await co
     .connect(new ethers.Wallet(process.env.PK, pv))
-    .setReferral(re.body.referee, re.body.referral);
+    .setReferral(re.referee, re.referral);
   await tx.wait();
 }

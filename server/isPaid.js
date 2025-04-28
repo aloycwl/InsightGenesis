@@ -8,5 +8,5 @@ export async function isPaid(re) {
     pv,
   );
 
-  return await co.paid(re.body.addr);
+  return await co.paid(re.addr);
 }

@@ -10,6 +10,6 @@ export async function setPaid(re) {
 
   const tx = await co
     .connect(new ethers.Wallet(process.env.PK, pv))
-    .setPaid(re.body.addr);
+    .setPaid(re);
   await tx.wait();
 }
