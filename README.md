@@ -10,23 +10,56 @@ To start the server, run:
 npm start
 ```
 
-## Upload Endpoint (via CURL)
-
-You can upload a file along with an address using the following curl command:
-
-Linux command
+## 1. Upload User Report
 ```bash
-curl -X POST https://insightgenesis.onrender.com/upload \
-  -F "file=@./example.json" \
-  -F "addr=0x2e0aCE0129E66A36cee92c5146C73Ec4874d0109"
+curl -X POST https://insightgenesis.onrender.com/upload  -F "file=@./<FILE_NAME>" -F "addr=<ADDRESS>"
 ```
 
-Windows command
-```powershell
-curl -X POST https://insightgenesis.onrender.com/upload -F "file=@example.json" -F "addr=0x2e0aCE0129E66A36cee92c5146C73Ec4874d0109"
+Description:
+- Uploads a user's report file to IPFS and stores the resulting CID on-chain, linked to the given <ADDRESS>.
+
+Parameters:
+- file — The report file to upload.
+- addr — The wallet address associated with the report.
+
+## 2. Set Referral
+```bash
+curl -X POST https://insightgenesis.onrender.com/setReferral -F "referee=<ADDRESS_1>" -F "referral=<ADDRESS_2>"
 ```
 
-A success transaction will return a code 200.
+Description:
+- Permanently assigns <ADDRESS_2> as the referrer of <ADDRESS_1>.
+
+Parameters:
+- referee — The address being referred.
+- referral — The address acting as the referrer.
+
+## 3. Set Paid Status
+```bash
+curl -X POST https://insightgenesis.onrender.com/setPaid -F "addr=<ADDRESS>"
+```
+
+Description:
+- Marks the given <ADDRESS> as paid on-chain.
+
+## 4. Check Paid Status
+```bash
+curl -X POST https://insightgenesis.onrender.com/isPaid -F "addr=<ADDRESS>"
+```
+Description:
+- Checks if the given <ADDRESS> has completed payment.
+- If paid, it will load and return a set of advanced reports.
+
+## 5. Pay via Web Interface
+
+### URL: https://insightgenesis.onrender.com/pay
+Description:
+- Connect to the user's EVM wallet.
+- Approve USDT (Tether) contract spending.
+- Complete the payment process securely.
+
+
+
 
 # Insight Genesis Smart Contracts
 
