@@ -8,22 +8,10 @@ export async function dbSelect(re) {
   return data;
 }
 
-export async function dbInsert(re) {
-  if ((await dbSelect(re.email)).length === 0) {
-    await sb.from("insight").insert([
-      {
-        cid: re.cid,
-        email: re.email,
-      },
-    ]);
-  } else {
-    await sb
-      .from("insight")
-      .update({
-        cid: re.cid,
-      })
-      .eq("email", re.email);
-  }
+export async function dbInsert(rc, re) {
+  if ((await dbSelect(re)).length === 0)
+    await sb.from("insight").insert([{ cid: rc, email: re }]);
+  else await sb.from("insight").update({ cid: rc }).eq("email", re);
 }
 
 export async function dbDelete(re) {

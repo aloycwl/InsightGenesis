@@ -1,11 +1,11 @@
 import { ci, pv } from "./global.js";
-import { ethers } from "ethers";
-import { PinataSDK } from "pinata";
+import { ethers as et } from "ethers";
+import { PinataSDK as ps } from "pinata";
 import fs from "fs/promises";
 
 export async function upload(re) {
   const fb = await fs.readFile(re.file.path);
-  const pn = new PinataSDK({
+  const pn = new ps({
     pinataJwt: process.env.PJ,
     pinataGateway: "amber-implicit-jay-463.mypinata.cloud",
   });
@@ -14,14 +14,14 @@ export async function upload(re) {
     new Blob([fb], { type: re.file.mimetype }),
   );
 
-  const co = new ethers.Contract(
+  const co = new et.Contract(
     ci,
     ["function store(string calldata, address) external"],
     pv,
   );
 
   const tx = await co
-    .connect(new ethers.Wallet(process.env.PK, pv))
+    .connect(new et.Wallet(process.env.PK, pv))
     .store(cid, re.body.addr);
   await tx.wait();
 }

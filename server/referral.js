@@ -1,15 +1,15 @@
 import { ci, pv } from "./global.js";
-import { ethers } from "ethers";
+import { ethers as et } from "ethers";
 
-export async function setReferral(re) {
-  const co = new ethers.Contract(
+export async function setReferral(re, rl) {
+  const co = new et.Contract(
     ci,
     ["function setReferral(address, address) external"],
     pv,
   );
 
   const tx = await co
-    .connect(new ethers.Wallet(process.env.PK, pv))
-    .setReferral(re.referee, re.referral);
+    .connect(new et.Wallet(process.env.PK, pv))
+    .setReferral(re, rl);
   await tx.wait();
 }
