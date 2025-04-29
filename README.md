@@ -12,43 +12,43 @@ npm start
 
 ## 1. Upload User Report
 ```bash
-curl -X POST https://insightgenesis.onrender.com/upload  -F "file=@./<FILE_NAME>" -F "addr=<ADDRESS>"
+curl -X POST https://insightgenesis.onrender.com/upload  -F "file=@./<FILE_NAME>" -F "addr=<ADDRESS>" -F "key=<API_KEY>"
 ```
 
 Description:
 - Uploads a user's report file to IPFS and stores the resulting CID on-chain, linked to the given <ADDRESS>.
-
-Parameters:
 - file — The report file to upload.
 - addr — The wallet address associated with the report.
+- key - The API key to use this service.
 
 ## 2. Set Referral
 ```bash
-curl -X POST https://insightgenesis.onrender.com/setReferral -F "referee=<ADDRESS_1>" -F "referral=<ADDRESS_2>"
+curl -X POST https://insightgenesis.onrender.com/setReferral -F "referee=<ADDRESS_1>" -F "referral=<ADDRESS_2>" -F "key=<API_KEY>"
 ```
 
 Description:
 - Permanently assigns <ADDRESS_2> as the referrer of <ADDRESS_1>.
-
-Parameters:
 - referee — The address being referred.
 - referral — The address acting as the referrer.
+- key - The API key to use this service.
 
 ## 3. Set Paid Status
 ```bash
-curl -X POST https://insightgenesis.onrender.com/setPaid -F "addr=<ADDRESS>"
+curl -X POST https://insightgenesis.onrender.com/setPaid -F "addr=<ADDRESS>" -F "key=<API_KEY>"
 ```
 
 Description:
 - Marks the given <ADDRESS> as paid on-chain.
+- key - The API key to use this service
 
 ## 4. Check Paid Status
 ```bash
-curl -X POST https://insightgenesis.onrender.com/isPaid -F "addr=<ADDRESS>"
+curl -X POST https://insightgenesis.onrender.com/isPaid -F "addr=<ADDRESS>" -F "key=<API_KEY>"
 ```
 Description:
 - Checks if the given <ADDRESS> has completed payment.
 - If paid, it will load and return a set of advanced reports.
+- key - The API key to use this service
 
 ## 5. Pay via Web Interface
 
@@ -58,8 +58,33 @@ Description:
 - Approve USDT (Tether) contract spending.
 - Complete the payment process securely.
 
+## 6. Add/Update a Database Entry
+```bash
+curl -X POST https://insightgenesis.onrender.com/dbInsert -F "email=<EMAIL>" -F "cid=<CID>" -F "key=<API_KEY>"
+```
+Description:
+- To insert the user's CID with binding email if user is not onchain
+- email - the user's email
+- CID - the IPFS content ID
+- key - The API key to use this service
 
-
+## 7. Get a Database Entry
+```bash
+curl -X POST https://insightgenesis.onrender.com/dbSelect -F "email=<EMAIL>" -F "key=<API_KEY>"
+```
+Description:
+- To get the user's CID with from the email
+- email - the user's email
+- key - The API key to use this service
+- 
+## 8. Delete a Database Record
+```bash
+curl -X POST https://insightgenesis.onrender.com/dbDelete -F "email=<EMAIL>" -F "key=<API_KEY>"
+```
+Description:
+- Once the record is updated onchain it can be deleted
+- email - the user's email
+- key - The API key to use this service
 
 # Insight Genesis Smart Contracts
 
