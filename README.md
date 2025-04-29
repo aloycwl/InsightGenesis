@@ -2,6 +2,8 @@
 
 This project enables users to upload files and associate them with specific addresses for further analysis on the Insight Genesis platform.
 
+![Current Architecture](https://raw.githubusercontent.com/aloycwl/insightgenesis/refs/heads/main/currentarch.png)
+
 ## Activate the Server
 
 To start the server, run:
