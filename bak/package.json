@@ -4,7 +4,7 @@
   "description": "This contract implements standard token functions with additional features:",
   "main": "index.js",
   "scripts": {
-    "build": "echo \"No build step needed\"",
+    "build": "tsc",
     "start": "node server/start.js"
   },
   "repository": {
