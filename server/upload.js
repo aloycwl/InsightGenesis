@@ -1,5 +1,6 @@
+import { ci, pg, pv, PJ, PK } from "./global.js";
 import { dbIGAI as di } from "./supabase.js";
-import { pg, PJ } from "./global.js";
+import { ethers as et } from "ethers";
 import { PinataSDK as ps } from "pinata";
 
 export async function upload(rd, ra, rt, aa) {
@@ -12,5 +13,11 @@ export async function upload(rd, ra, rt, aa) {
 
   di(cid, ra, rt);
 
-  // Chain activities
+  const co = new et.Contract(
+    ci,
+    ["function store(address, address) external"],
+    pv,
+  );
+  const tx = await co.connect(new et.Wallet(PK, pv)).store(ra, aa);
+  await tx.wait();
 }
