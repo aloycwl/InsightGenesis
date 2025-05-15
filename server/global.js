@@ -3,7 +3,7 @@ import * as de from "dotenv";
 
 de.config();
 
-export const ci = "0x4E6766019a3CA4f9951609f147F9Ebc3dcf4Bf6c";
+export const ci = "0xe4162Fb9f03F2e8bF8022F4E236FAce93efaf5AA";
 export const ig = "https://api.insightgenie.ai/";
 export const pg = "amber-implicit-jay-463.mypinata.cloud";
 export const pv = new et.JsonRpcProvider(
