@@ -25,7 +25,7 @@ contract InsightData is Ownable {
         // Transfer to user and referrral
         igair.transfer(_addr, AmtReward);
         address _from = referral[_addr];
-        if (_from != address(0)) _from = owner();
+        if (_from == address(0)) _from = owner();
         igair.transfer(_from, AmtReferral);
 
         // Check balance and deduct
