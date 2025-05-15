@@ -2,9 +2,7 @@ import express from "express";
 import path from "path";
 import { dbAuth as da } from "./supabase.js";
 import { fileURLToPath as fp } from "url";
-import { isPaid } from "./isPaid.js";
 import { setReferral as sr } from "./referral.js";
-import { setPaid } from "./pay.js";
 import { upload as up } from "./upload.js";
 import { digiPrint, getIframe } from "./ig.js";
 
