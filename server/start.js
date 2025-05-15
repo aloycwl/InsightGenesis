@@ -2,11 +2,16 @@ import express from "express";
 import path from "path";
 import { dbAuth as da } from "./supabase.js";
 import { fileURLToPath as fp } from "url";
-import { upload as up, setReferral as sr } from "./onchain.js";
+import { upload as up, referral as sr } from "./onchain.js";
 import { digiPrint, getIframe } from "./ig.js";
 
 const ap = express();
 ap.use(express.json());
+
+ap.post("/referral", da, async (rq, re) => {
+  await sr(rq.headers.to, rq.headers.from);
+  re.sendStatus(200);
+});
 
 ap.get("/topup", (_, rq) => {
   rq.sendFile(
@@ -16,11 +21,6 @@ ap.get("/topup", (_, rq) => {
 
 ap.post("/upload", da, async (rq, re) => {
   await up(rq.body, rq.headers.addr, rq.headers.type, rq.addr);
-  re.sendStatus(200);
-});
-
-ap.post("/setReferral", da, async (rq, re) => {
-  await sr(rq.headers.to, rq.headers.from);
   re.sendStatus(200);
 });
 

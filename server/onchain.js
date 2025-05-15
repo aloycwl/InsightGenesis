@@ -3,7 +3,7 @@ import { dbIGAI as di } from "./supabase.js";
 import { ethers as et } from "ethers";
 import { PinataSDK as ps } from "pinata";
 
-export async function setReferral(re, rl) {
+export async function referral(re, rl) {
   const co = new et.Contract(
     ci,
     ["function setRef(address, address) external"],
