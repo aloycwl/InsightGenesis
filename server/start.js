@@ -1,7 +1,6 @@
 import express from "express";
-import multer from "multer";
 import path from "path";
-import { dbSelect, dbInsert, dbDelete, dbAuth } from "./supabase.js";
+import { dbAuth as da } from "./supabase.js";
 import { fileURLToPath as fp } from "url";
 import { isPaid } from "./isPaid.js";
 import { setReferral } from "./referral.js";
@@ -10,53 +9,39 @@ import { upload } from "./upload.js";
 import { digiPrint, getIframe } from "./ig.js";
 
 const ap = express();
-const ul = multer({ dest: "uploads/" });
-const dn = path.dirname(fp(import.meta.url));
-
 ap.use(express.json());
 
 ap.get("/pay", (_, rq) => {
-  rq.sendFile(path.join(dn, "../public", "pay.html"));
+  rq.sendFile(
+    path.join(path.dirname(fp(import.meta.url)), "../public", "pay.html"),
+  );
 });
 
-ap.post("/upload", dbAuth, async (re, rs) => {
-  await upload(re);
+ap.post("/upload", da, async (rq, re) => {
+  await upload(rq.body, rq.headers.addr, rq.headers.type, rq.addr);
+  re.sendStatus(200);
+});
+
+ap.post("/setReferral", da, async (re, rq) => {
+  await setReferral(re.headers.referee, re.headers.referral);
+  rq.sendStatus(200);
+});
+
+ap.post("/setPaid", da, async (re, rs) => {
+  await setPaid(re.headers.addr);
   rs.sendStatus(200);
 });
 
-ap.post("/setReferral", dbAuth, async (re, rs) => {
-  await setReferral(re.body.referee, re.body.referral);
-  rs.sendStatus(200);
+ap.post("/isPaid", da, async (re, rs) => {
+  rs.send(await isPaid(re.headers.addr));
 });
 
-ap.post("/setPaid", dbAuth, async (re, rs) => {
-  await setPaid(re.body.addr);
-  rs.sendStatus(200);
-});
-
-ap.post("/isPaid", dbAuth, async (re, rs) => {
-  rs.send(await isPaid(re.body.addr));
-});
-
-ap.post("/dbSelect", dbAuth, async (re, rs) => {
-  rs.send(await dbSelect(re.body.email));
-});
-
-ap.post("/dbInsert", dbAuth, async (re, rs) => {
-  await dbInsert(re.body.cid, re.body.email);
-  rs.sendStatus(200);
-});
-
-ap.post("/dbDelete", dbAuth, async (re, rs) => {
-  await dbDelete(re.body.email);
-  rs.sendStatus(200);
-});
-
-ap.post("/digiPrint", dbAuth, async (_, rs) => {
+/* FOR TESTING ONLY */
+ap.post("/digiPrint", da, async (_, rs) => {
   rs.send(await digiPrint());
 });
 
-ap.post("/getIframe", dbAuth, async (_, rs) => {
+ap.post("/getIframe", da, async (_, rs) => {
   rs.send(await getIframe());
 });
 

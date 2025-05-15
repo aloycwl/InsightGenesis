@@ -1,15 +1,16 @@
-import { dbIGAI } from "./supabase.js";
+import { dbIGAI as di } from "./supabase.js";
+import { pg, PJ } from "./global.js";
 import { PinataSDK as ps } from "pinata";
 
-export async function upload(re) {
-  const pn = new ps({
-    pinataJwt: process.env.PJ,
-    pinataGateway: "amber-implicit-jay-463.mypinata.cloud",
-  });
-
-  const { cid } = await pn.upload.public.file(
-    new Blob([JSON.stringify(re.body)], { type: "application/json" }),
+export async function upload(rd, ra, rt, aa) {
+  const { cid } = await new ps({
+    pinataJwt: PJ,
+    pinataGateway: pg,
+  }).upload.public.file(
+    new Blob([JSON.stringify(rd)], { type: "application/json" }),
   );
 
-  dbIGAI(cid, re.headers.addr);
+  di(cid, ra, rt);
+
+  // Chain activities
 }
