@@ -10,3 +10,5 @@ export const pv = new et.JsonRpcProvider(
 );
 
 export const su = "https://uxxfyiukhlsahcyszutt.supabase.co";
+
+export const ig = "https://api.insightgenie.ai/";

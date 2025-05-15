@@ -17,3 +17,18 @@ export async function dbInsert(rc, re) {
 export async function dbDelete(re) {
   await sb.from("insight").delete().eq("email", re);
 }
+
+export const dbAuth = async (rq, re, next) => {
+  const { data } = await sb
+    .from("keys")
+    .select("num")
+    .eq("key", rq.headers.authorization);
+
+  if (data.length === 0) return re.sendStatus(401);
+
+  next();
+};
+
+export async function dbIGAI(ci, ad) {
+  await sb.from("igai").insert([{ cid: ci, addr: ad }]);
+}

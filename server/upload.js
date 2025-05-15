@@ -1,27 +1,15 @@
-import { ci, pv } from "./global.js";
-import { ethers as et } from "ethers";
+import { dbIGAI } from "./supabase.js";
 import { PinataSDK as ps } from "pinata";
-import fs from "fs/promises";
 
 export async function upload(re) {
-  const fb = await fs.readFile(re.file.path);
   const pn = new ps({
     pinataJwt: process.env.PJ,
     pinataGateway: "amber-implicit-jay-463.mypinata.cloud",
   });
 
   const { cid } = await pn.upload.public.file(
-    new Blob([fb], { type: re.file.mimetype }),
+    new Blob([JSON.stringify(re.body)], { type: "application/json" }),
   );
 
-  const co = new et.Contract(
-    ci,
-    ["function store(string calldata, address) external"],
-    pv,
-  );
-
-  const tx = await co
-    .connect(new et.Wallet(process.env.PK, pv))
-    .store(cid, re.body.addr);
-  await tx.wait();
+  dbIGAI(cid, re.headers.addr);
 }
