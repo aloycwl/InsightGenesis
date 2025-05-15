@@ -11,7 +11,7 @@ contract InsightData is Ownable {
 
     uint256 public AmtReward = 10 ether;
     uint256 public AmtReferral = 5 ether;
-    uint256 public fee = 20 ether;
+    uint256 public fee = 5 ether;
     mapping(address => uint256) public org;
     mapping(address => address) public referral;
     IERC20 public igair;
@@ -25,10 +25,11 @@ contract InsightData is Ownable {
         // Transfer to user and referrral
         igair.transfer(_addr, AmtReward);
         address _from = referral[_addr];
-        if (_from != address(0)) igair.transfer(_from, AmtReferral);
+        if (_from != address(0)) _from = owner();
+        igair.transfer(_from, AmtReferral);
 
         // Check balance and deduct
-        (uint256 _amt, uint256 _fee) = (org[_coy], AmtReward + AmtReferral);
+        (uint256 _amt, uint256 _fee) = (org[_coy], AmtReward + AmtReferral + fee);
         require(_amt >= _fee, "Insufficient balance");
         org[_coy] -= _fee;
     }
