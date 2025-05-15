@@ -16,7 +16,7 @@ contract InsightData is Ownable {
     mapping(address => address) public referral;
     IERC20 public igair;
 
-    function pay(uint256 _amt) external payable {
+    function topup(uint256 _amt) external payable {
         igair.transferFrom(msg.sender, address(this), _amt);
         org[msg.sender] += _amt;
     }
