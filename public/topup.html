@@ -1,0 +1,127 @@
+<!doctype html>
+<html>
+  <head>
+    <script src="https://cdn.jsdelivr.net/npm/web3@1.10.0/dist/web3.min.js"></script>
+  </head>
+  <body>
+    Paying...
+    <script>
+      const iu = "0x61BF7bB90E21450fF1daa06DBA18620cCb83a60F",
+        ig = "0x4E6766019a3CA4f9951609f147F9Ebc3dcf4Bf6c";
+
+      let web3, user, amount;
+
+      async function init() {
+        amount = Web3.utils.toWei(
+          new URLSearchParams(window.location.search).get("amt") || "100",
+          "ether",
+        );
+
+        if (window.ethereum) {
+          await switchToBnbTestChain();
+
+          web3 = new Web3(window.ethereum);
+          const accounts = await ethereum.request({
+            method: "eth_requestAccounts",
+          });
+          user = accounts[0];
+
+          const approved = await checkApproval();
+          if (approved) {
+            await pay();
+          } else {
+            await approve();
+            await pay();
+          }
+        } else {
+          alert("Please install MetaMask");
+        }
+      }
+
+      async function switchToBnbTestChain() {
+        try {
+          await ethereum.request({
+            method: "wallet_switchEthereumChain",
+            params: [{ chainId: "0x61" }],
+          });
+        } catch (switchError) {
+          if (switchError.code === 4902) {
+            await ethereum.request({
+              method: "wallet_addEthereumChain",
+              params: [
+                {
+                  chainId: "0x61",
+                  chainName: "BSC Testnet",
+                  rpcUrls: ["https://data-seed-prebsc-1-s1.binance.org:8545"],
+                  nativeCurrency: {
+                    name: "BNB",
+                    symbol: "BNB",
+                    decimals: 18,
+                  },
+                },
+              ],
+            });
+          }
+        }
+      }
+
+      async function checkApproval() {
+        const token = new web3.eth.Contract(
+          [
+            {
+              constant: true,
+              inputs: [
+                { name: "", type: "address" },
+                { name: "", type: "address" },
+              ],
+              name: "allowance",
+              outputs: [{ name: "", type: "uint256" }],
+              type: "function",
+            },
+          ],
+          iu,
+        );
+        const allowance = await token.methods.allowance(user, ig).call();
+        return web3.utils.toBN(allowance).gte(web3.utils.toBN(amount));
+      }
+
+      async function approve() {
+        const token = new web3.eth.Contract(
+          [
+            {
+              constant: false,
+              inputs: [
+                { name: "", type: "address" },
+                { name: "", type: "uint256" },
+              ],
+              name: "approve",
+              outputs: [],
+              type: "function",
+            },
+          ],
+          iu,
+        );
+        await token.methods.approve(ig, amount).send({ from: user });
+      }
+
+      async function pay() {
+        const payContract = new web3.eth.Contract(
+          [
+            {
+              constant: false,
+              inputs: [{ name: "", type: "uint256" }],
+              name: "pay",
+              outputs: [],
+              type: "function",
+            },
+          ],
+          ig,
+        );
+        await payContract.methods.pay(amount).send({ from: user });
+        window.close();
+      }
+
+      window.addEventListener("load", init);
+    </script>
+  </body>
+</html>
