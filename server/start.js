@@ -2,8 +2,7 @@ import express from "express";
 import path from "path";
 import { dbAuth as da } from "./supabase.js";
 import { fileURLToPath as fp } from "url";
-import { setReferral as sr } from "./referral.js";
-import { upload as up } from "./upload.js";
+import { upload as up, setReferral as sr } from "./onchain.js";
 import { digiPrint, getIframe } from "./ig.js";
 
 const ap = express();
