@@ -5,95 +5,52 @@ import {Ownable} from "@openzeppelin/contracts/access/Ownable.sol";
 import {IERC20} from "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 
 contract InsightData is Ownable {
-    constructor() payable Ownable(msg.sender) {}
+    constructor(address _addr, uint256 _amt) payable Ownable(msg.sender) {
+        org[_addr] += _amt;
+    }
 
-    uint256 public count;
-    uint256 public rewardAmountFree = 10 ether;
-    uint256 public referralAmountFree = 5 ether;
-    uint256 public rewardAmountPaid = 100 ether;
-    uint256 public referralAmountPaid = 50 ether;
-    uint256 public fee = 5 ether;
-    mapping(address => string) public data;
-    mapping(uint256 => address) public user;
+    uint256 public AmtReward = 10 ether;
+    uint256 public AmtReferral = 5 ether;
+    uint256 public fee = 20 ether;
+    mapping(address => uint256) public org;
     mapping(address => address) public referral;
-    mapping(address => uint256) public userCount;
-    mapping(address => bool) public paid;
     IERC20 public igair;
-    IERC20 public iusdt;
-    event NewData(uint256 indexed, string, address);
 
-    function store(string calldata _data, address _account) external payable {
-        if (paid[_account]) {
-            _sendRewards(_account, rewardAmountPaid, referralAmountPaid);
-            paid[_account] = false;
-        } else {
-            // Free user can only do once
-            require(bytes(data[_account]).length == 0, "Record existed");
-
-            _sendRewards(_account, rewardAmountFree, referralAmountFree);
-        }
-        _storage(_data, _account);
+    function pay(uint256 _amt) external payable {
+        igair.transferFrom(msg.sender, address(this), _amt);
+        org[msg.sender] += _amt;
     }
 
-    function pay() external payable {
-        iusdt.transferFrom(msg.sender, owner(), fee);
-        paid[msg.sender] = true;
+    function store(address _addr, address _coy) external payable onlyOwner {
+        // Transfer to user and referrral
+        igair.transfer(_addr, AmtReward);
+        address _from = referral[_addr];
+        if (_from != address(0)) igair.transfer(_from, AmtReferral);
+
+        // Check balance and deduct
+        (uint256 _amt, uint256 _fee) = (org[_coy], AmtReward + AmtReferral);
+        require(_amt >= _fee, "Insufficient balance");
+        org[_coy] -= _fee;
     }
 
-    function _sendRewards(
-        address _account,
-        uint256 _amountRewards,
-        uint256 _amountReferral
-    ) private {
-        igair.transfer(_account, _amountRewards);
-        address _referral = referral[_account];
-        if (_referral != address(0)) igair.transfer(_referral, _amountReferral);
+    function setRef(address _to, address _from) external payable onlyOwner {
+        require(referral[_to] == address(0), "Record existed");
+        referral[_to] = _from;
     }
 
-    function _storage(string calldata _data, address _account) private {
-        unchecked {
-            uint256 _count = ++count;
-            (data[_account], user[_count]) = (_data, _account);
-
-            ++userCount[_account];
-            emit NewData(_count, _data, _account);
-        }
+    function setIGAIr(address _addr) external payable onlyOwner {
+        igair = IERC20(_addr);
     }
 
-    function setReferral(address _referee, address _referral)
-        external
-        payable
-        onlyOwner
-    {
-        require(referral[_referee] == address(0), "Record existed");
-        referral[_referee] = _referral;
+    function setAmtReward(uint256 _amt) external payable onlyOwner {
+        AmtReward = _amt;
     }
 
-    function setIGAIr(address _address) external payable onlyOwner {
-        igair = IERC20(_address);
+    function setAmtReferral(uint256 _amt) external payable onlyOwner {
+        AmtReferral = _amt;
     }
 
-    function setUSDT(address _address) external payable onlyOwner {
-        iusdt = IERC20(_address);
-    }
-
-    function setRewardFree(uint256 _amount) external payable onlyOwner {
-        rewardAmountFree = _amount;
-    }
-
-    function setRewardPaid(uint256 _amount) external payable onlyOwner {
-        rewardAmountPaid = _amount;
-    }
-
-    function setReferralFree(uint256 _amount) external payable onlyOwner {
-        referralAmountPaid = _amount;
-    }
-
-    function setReferralPaid(uint256 _amount) external payable onlyOwner {
-        referralAmountFree = _amount;
-    }
-
-    function setPaid(address _address) external payable onlyOwner {
-        paid[_address] = true;
+    function withdraw(uint256 _amt) external payable onlyOwner {
+        igair.transfer(owner(), _amt);
     }
 }

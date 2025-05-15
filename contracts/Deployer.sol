@@ -8,19 +8,13 @@ contract Deployer {
     InsightData public insightData;
 
     constructor() {
-        IGAI igai = new IGAI();
-        insightData = new InsightData();
+        (IGAI _igai, uint _amt) = (new IGAI(), 1e4 ether);
+        insightData = new InsightData(msg.sender, _amt);
 
-        /*** Mock USDT, to be remove in deploy ***/
-        IGAI usdt = new IGAI();
-        usdt.mint(msg.sender, 100 ether);
-        /*** End of mock ***/
+        insightData.setIGAIr(address(_igai));
+        _igai.mint(address(insightData), 1e3 ether);
 
-        insightData.setUSDT(address(usdt));
-        insightData.setIGAIr(address(igai));
-        igai.mint(address(insightData), 1e10 ether);
-
-        igai.transferOwnership(msg.sender);
+        _igai.transferOwnership(msg.sender);
         insightData.transferOwnership(msg.sender);
     }
 }
