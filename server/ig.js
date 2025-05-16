@@ -1,5 +1,5 @@
 import axios from "axios";
-import { ig } from "./global.js";
+import { ig } from "./config.js";
 
 async function auth() {
   return (
@@ -35,33 +35,33 @@ export async function getIframe() {
     clientId: "0x2e0aCE0129E66A36cee92c5146C73Ec4874d0109",
     age: 38,
     gender: "male",
-    showResults: "display",
+    showResults: "sendInMessage",
     noDesign: false,
     faceOutline: true,
     buttonBgColor: "#000000",
     buttonTextColor: "#ffffff",
     isVoiceAnalysisOn: false,
-    voiceAnalysisType: "fraud",
+    voiceAnalysisType: "",
     forceFrontCamera: true,
-    diabetesHypertensionParameters: {
-      height: 168,
-      weight: 63,
-      smoker: false,
-      hypertension: false,
-      bpMedication: false,
-      diabetic: 0,
-      waistCircumference: 29,
-      heartDisease: false,
-      depression: false,
-      totalCholesterol: 200,
-      hdl: 50,
-      parentalHypertension: 0,
-      physicalActivity: true,
-      healthyDiet: true,
-      antiHypertensive: false,
-      historyBloodGlucose: false,
-      historyFamilyDiabetes: 0,
-    },
+    // diabetesHypertensionParameters: {
+    //   height: 168,
+    //   weight: 63,
+    //   smoker: false,
+    //   hypertension: false,
+    //   bpMedication: false,
+    //   diabetic: 0,
+    //   waistCircumference: 29,
+    //   heartDisease: false,
+    //   depression: false,
+    //   totalCholesterol: 200,
+    //   hdl: 50,
+    //   parentalHypertension: 0,
+    //   physicalActivity: true,
+    //   healthyDiet: true,
+    //   antiHypertensive: false,
+    //   historyBloodGlucose: false,
+    //   historyFamilyDiabetes: 0,
+    // },
     language: "en",
     showDisclaimer: "false",
   };
@@ -70,7 +70,7 @@ export async function getIframe() {
       await axios.post(`${ig}face-scan/generate-video-token`, data, {
         headers: { Authorization: `Bearer ${await auth()}` },
       })
-    ).data;
+    ).data.videoIframeUrl;
   } catch (error) {
     return error.response.data;
   }

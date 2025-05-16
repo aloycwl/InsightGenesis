@@ -1,5 +1,5 @@
 import { createClient as cc } from "@supabase/supabase-js";
-import { su } from "./global.js";
+import { su } from "./config.js";
 
 const sb = cc(su, process.env.SB);
 

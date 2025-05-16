@@ -6,8 +6,6 @@
   <body>
     Paying...
     <script>
-      const iu = "0x5162bded6e5ca3403e37b6C2845eFD07a3cf9B08",
-        ig = "0xe4162Fb9f03F2e8bF8022F4E236FAce93efaf5AA";
       let ua, pv, am;
 
       async function init() {
@@ -16,10 +14,7 @@
           18,
         );
 
-        if (!window.ethereum) {
-          alert("Please install MetaMask");
-          window.close();
-        }
+        if (!window.ethereum) alert("Please install MetaMask"); 
 
         try {
           await ethereum.request({
@@ -58,25 +53,25 @@
 
       async function checkApproval() {
         const tx = await new ethers.Contract(
-          iu,
+          "<%= cr %>",
           ["function allowance(address, address) view returns (uint256)"],
           pv,
-        ).allowance(ua, ig);
+        ).allowance(ua, "<%= ci %>");
         return tx.gte(am);
       }
 
       async function approve() {
         const tx = await new ethers.Contract(
-          iu,
+          "<%= cr %>",
           ["function approve(address, uint256)"],
           pv.getSigner(),
-        ).approve(ig, am);
+        ).approve("<%= ci %>", am);
         await tx.wait();
       }
 
       async function topup() {
         const tx = await new ethers.Contract(
-          ig,
+          "<%= ci %>",
           ["function topup(uint256)"],
           pv.getSigner(),
         ).topup(am);

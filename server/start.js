@@ -1,11 +1,13 @@
 import express from "express";
 import path from "path";
+import { ci, cr } from "./config.js";
 import { dbAuth as da } from "./supabase.js";
-import { fileURLToPath as fp } from "url";
 import { upload as up, referral as sr } from "./onchain.js";
 import { digiPrint, getIframe } from "./ig.js";
 
 const ap = express();
+ap.set("view engine", "ejs");
+ap.set("views", path.join(process.cwd(), "views"));
 ap.use(express.json());
 
 ap.post("/referral", da, async (rq, re) => {
@@ -13,10 +15,13 @@ ap.post("/referral", da, async (rq, re) => {
   re.sendStatus(200);
 });
 
-ap.get("/topup", (_, rq) => {
-  rq.sendFile(
-    path.join(path.dirname(fp(import.meta.url)), "../public", "topup.html"),
-  );
+ap.get("/scan", async (_, re) => {
+  const fr = await getIframe();
+  re.render("scan", { fr });
+});
+
+ap.get("/topup", (_, re) => {
+  re.render("topup", { ci, cr });
 });
 
 ap.post("/upload", da, async (rq, re) => {

@@ -25,7 +25,7 @@ curl -X POST https://insightgenesis.onrender.com/upload \
 Description:
 - Uploads a user's report file to IPFS and stores the resulting CID on-chain, linked to the given <ADDRESS>.
 - key - The API key to use this service.
-- type — Either audio, faceScan or digitalFootprint
+- type — Either 0: digitalFootprint, 1: faceScan, 2+: audio
 - addr — The wallet address associated with the report.
 - dataJson - The data file returned from Insight Genie
 

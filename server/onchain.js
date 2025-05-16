@@ -1,7 +1,9 @@
-import { ci, pg, pv, PJ, PK } from "./global.js";
+import { ci, pg, pr, PJ, PK } from "./config.js";
 import { dbIGAI as di } from "./supabase.js";
 import { ethers as et } from "ethers";
 import { PinataSDK as ps } from "pinata";
+
+const pv = new et.JsonRpcProvider(pr);
 
 export async function referral(re, rl) {
   const co = new et.Contract(
