@@ -1,5 +1,5 @@
 import { ci, pg, pr, PJ, PK } from "./config.js";
-import { dbIGAI as di } from "./supabase.js";
+import { dbIGAI as di, dbNew as dn } from "./supabase.js";
 import { ethers as et } from "ethers";
 import { PinataSDK as ps } from "pinata";
 
@@ -24,13 +24,15 @@ export async function upload(rd, ra, rt, aa) {
     new Blob([JSON.stringify(rd)], { type: "application/json" }),
   );
 
-  di(cid, ra, rt);
+  if (await dn(ra)) {
+    const co = new et.Contract(
+      ci,
+      ["function store(address, address) external"],
+      pv,
+    );
+    const tx = await co.connect(new et.Wallet(PK, pv)).store(ra, aa);
+    await tx.wait();
+  }
 
-  const co = new et.Contract(
-    ci,
-    ["function store(address, address) external"],
-    pv,
-  );
-  const tx = await co.connect(new et.Wallet(PK, pv)).store(ra, aa);
-  await tx.wait();
+  di(cid, ra, rt);
 }

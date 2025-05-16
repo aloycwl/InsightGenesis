@@ -18,3 +18,13 @@ export const dbAuth = async (rq, re, next) => {
 export async function dbIGAI(ci, ad, ty) {
   await sb.from("igai").insert([{ cid: ci, addr: ad, type: ty }]);
 }
+
+export async function dbNew(ad) {
+  const { data } = await sb
+    .from("igai")
+    .select("cid")
+    .eq("addr", ad)
+    .limit(1)
+    .single();
+  return !(data);
+}
