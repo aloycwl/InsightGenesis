@@ -7,4 +7,4 @@ export const ig = "https://api.insightgenie.ai/";
 export const pg = "amber-implicit-jay-463.mypinata.cloud";
 export const pr = "https://data-seed-prebsc-1-s1.bnbchain.org:8545/";
 export const su = "https://uxxfyiukhlsahcyszutt.supabase.co";
-export const { PJ, PK, SB, IK, IS } = process.env;
+export const { PJ, PK, SB, IK, IS, MA } = process.env;

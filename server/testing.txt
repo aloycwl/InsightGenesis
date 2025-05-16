@@ -1,0 +1,19 @@
+https://4b5a14e4-96c0-4b05-828c-05eb657912fe-00-2cvr2cpu8teui.picard.replit.dev/pay
+
+curl -X POST https://4b5a14e4-96c0-4b05-828c-05eb657912fe-00-2cvr2cpu8teui.picard.replit.dev/getIframe \
+  -H "Authorization: c5UqVPihwtydCKe57YJPtpyE2ryB9AJn" 
+
+curl -X POST https://4b5a14e4-96c0-4b05-828c-05eb657912fe-00-2cvr2cpu8teui.picard.replit.dev/digiPrint \
+  -H "Authorization: c5UqVPihwtydCKe57YJPtpyE2ryB9AJn" 
+
+curl -X POST https://4b5a14e4-96c0-4b05-828c-05eb657912fe-00-2cvr2cpu8teui.picard.replit.dev/setReferral \
+  -H "Authorization: c5UqVPihwtydCKe57YJPtpyE2ryB9AJn" \
+  -H "to: 0xd023Aa538D6a4Ecb76Be58887f66CF1ed45E09DE" \
+  -H "from: 0xA34357486224151dDfDB291E13194995c22Df505" 
+
+curl -X POST https://4b5a14e4-96c0-4b05-828c-05eb657912fe-00-2cvr2cpu8teui.picard.replit.dev/upload \
+  -H "Authorization: c5UqVPihwtydCKe57YJPtpyE2ryB9AJn" \
+  -H "addr: 0x785aaC2b26E38cd711ab2CcefB396cCe15aCf84a" \
+  -H "type: 1" \
+  -H "Content-Type: application/json" \
+  -d '{"vitalSigns":{"heartRate":52.733285498859765,"spo2":98.62478774293302,"respiratoryRate":10.870806402401644,"stress":0.6197043454936977,"stressScore":33.95,"hrvSdnn":127.8930079554571,"hrvRmssd":16.184377224326674,"bloodPressure":"116/79","bloodPressureSystolic":116,"bloodPressureDiastolic":79},"holisticHealth":{"generalWellness":100},"risks":{"cardiovascularRisks":{"generalRisk":0.04654595522337979,"coronaryHeartDisease":0.03339206827725266,"congestiveHeartFailure":0.0053434756596439995,"intermittentClaudication":0.008396890322297713,"stroke":0.007400806880517386},"covidRisk":{"covidRisk":0.016185273294695213},"diabetesRisk":null,"hypertensionRisk":null}}'

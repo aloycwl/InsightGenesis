@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <script src="https://cdn.jsdelivr.net/npm/magic-sdk/dist/magic.js"></script>
+  </head>
+  <body>
+    <input type="email" id="email" placeholder="Enter your email" />
+    <button onclick="login()">Login</button>
+
+    <script>
+      const magic = new Magic("pk_live_27266000CD95B626");
+
+      async function login() {
+        const email = document.getElementById("email").value;
+
+        try {
+          await magic.auth.loginWithMagicLink({ email });
+
+          const didToken = await magic.user.getIdToken();
+
+          const res = await fetch("/session", {
+            method: "POST",
+            headers: {
+              Authorization: "Bearer " + didToken,
+              "Content-Type": "application/json"
+            },
+            body: JSON.stringify({ email })
+          });
+
+          const result = await res.json();
+          alert("Login success: " + JSON.stringify(result));
+        } catch (err) {
+          console.error("Login failed", err);
+        }
+      }
+    </script>
+  </body>
+</html>
