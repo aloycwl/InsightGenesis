@@ -46,13 +46,15 @@ Description:
 
 ## 3. Topup credit to produce reports
 
-### URL: https://insightgenesis.onrender.com/topup
+### URL: https://insightgenesis.onrender.com/topup{?amt=<amt>}
 
 Description:
 - For organisation to top up using IGAI token as the credit to use our services
 - Connect to the user's EVM wallet.
 - Approve IGAIr contract spending.
 - Complete the payment process securely.
+- Default top up is 100 IGAIr
+- [Optional] if querystring amt is specific, the top up amount will be changed to <amt>
 
 
 For more information, please visit: https://insightgenesis.my.canva.site/
