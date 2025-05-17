@@ -21,7 +21,7 @@ contract InsightData is Ownable {
         org[msg.sender] += _amt;
     }
 
-    function store(address _addr, address _coy) external payable onlyOwner {
+    function deduct(address _addr, address _coy) external payable onlyOwner {
         // Transfer to user and referrral
         igair.transfer(_addr, AmtReward);
         address _from = referral[_addr];
@@ -29,9 +29,21 @@ contract InsightData is Ownable {
         igair.transfer(_from, AmtReferral);
 
         // Check balance and deduct
-        (uint256 _amt, uint256 _fee) = (org[_coy], AmtReward + AmtReferral + fee);
+        (uint256 _amt, uint256 _fee) = (
+            org[_coy],
+            AmtReward + AmtReferral + fee
+        );
         require(_amt >= _fee, "Insufficient balance");
         org[_coy] -= _fee;
+    }
+
+    function deduct(address _coy) external payable onlyOwner {
+        igair.transfer(owner(), fee);
+
+        // Check balance and deduct
+        uint256 _amt = org[_coy];
+        require(_amt >= fee, "Insufficient balance");
+        org[_coy] -= fee;
     }
 
     function setRef(address _to, address _from) external payable onlyOwner {
