@@ -6,8 +6,7 @@ curl -X POST https://4b5a14e4-96c0-4b05-828c-05eb657912fe-00-2cvr2cpu8teui.picar
 curl -X POST https://4b5a14e4-96c0-4b05-828c-05eb657912fe-00-2cvr2cpu8teui.picard.replit.dev/digiPrint \
   -H "Authorization: c5UqVPihwtydCKe57YJPtpyE2ryB9AJn" 
 
-curl -X POST https://4b5a14e4-96c0-4b05-828c-05eb657912fe-00-2cvr2cpu8teui.picard.replit.dev/setReferral \
-  -H "Authorization: c5UqVPihwtydCKe57YJPtpyE2ryB9AJn" \
+curl -X POST https://4b5a14e4-96c0-4b05-828c-05eb657912fe-00-2cvr2cpu8teui.picard.replit.dev/ref \
   -H "to: 0xd023Aa538D6a4Ecb76Be58887f66CF1ed45E09DE" \
   -H "from: 0xA34357486224151dDfDB291E13194995c22Df505" 
 

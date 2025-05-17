@@ -1,21 +1,21 @@
 import { ci, pg, pr, PJ, PK } from "./config.js";
-import { dbIGAI as di, dbNew as dn } from "./supabase.js";
+import { dbIGAI, dbNew, dbTo, dbRef } from "./supabase.js";
 import { ethers as et } from "ethers";
 import { PinataSDK as ps } from "pinata";
 
 const pv = new et.JsonRpcProvider(pr);
 
-export async function ref(re, rl) {
-  // check if referral exists
-  
-  const co = new et.Contract(
-    ci,
-    ["function setRef(address, address) external"],
-    pv,
-  );
-
-  const tx = await co.connect(new et.Wallet(PK, pv)).setRef(re, rl);
-  await tx.wait();
+export async function ref(rt, rf) {
+  if (await dbTo(rt)) {
+    await dbRef(rt, rf);
+    const co = new et.Contract(
+      ci,
+      ["function setRef(address, address)"],
+      pv,
+    );
+    const tx = await co.connect(new et.Wallet(PK, pv)).setRef(rt, rf);
+    await tx.wait();
+  }
 }
 
 export async function store(rd, ra, rt, aa) {
@@ -26,15 +26,15 @@ export async function store(rd, ra, rt, aa) {
     new Blob([JSON.stringify(rd)], { type: "application/json" }),
   );
 
-  if (await dn(ra)) {
+  if (await dbNew(ra)) {
     const co = new et.Contract(
       ci,
-      ["function deduct(address, address) external"],
+      ["function deduct(address, address)"],
       pv,
     );
     const tx = await co.connect(new et.Wallet(PK, pv)).deduct(ra, aa);
     await tx.wait();
   }
 
-  di(cid, ra, rt);
+  dbIGAI(cid, ra, rt);
 }

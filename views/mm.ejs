@@ -8,12 +8,12 @@
     <script>
       (async () => {
         if (!window.ethereum) window.close(); 
-        const rf = new URLSearchParams(window.location.search).get("ref"),
-          ac = await ethereum.request({ method: "eth_requestAccounts" });
-        const ur = new URL("/scan", window.location.origin);
-        ur.searchParams.set("addr", ac[0]);
-        if (rf) ur.searchParams.set("ref", rf);
-        window.location.href = ur.toString();
+        const r = new URLSearchParams(window.location.search).get("ref"),
+          a = await ethereum.request({ method: "eth_requestAccounts" });
+        const u = new URL("/scan", window.location.origin);
+        u.searchParams.set("addr", a[0]);
+        if (r) u.searchParams.set("ref", r);
+        window.location.href = u.toString();
       })();
     </script>
   </body>

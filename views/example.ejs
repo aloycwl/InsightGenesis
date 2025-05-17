@@ -1,30 +1,30 @@
 <!doctype html>
 <html lang="en">
 <body>
-  <form id="ml" action="/ml" method="get">
+  <form id="l" action="/ml" method="get">
     <button type="submit">Example 1: Scan with Magic Link</button>
-    <input name="email" placeholder="Enter your email" required />
+    <input id="c" placeholder="Enter your email" required />
   </form>
   <hr>
-  <form id="mm" action="/mm">
+  <form id="m" action="/mm">
     <button type="submit">Example 2: Scan with Metamask</button>
   </form>
   
   <script>
-    const rf = new URLSearchParams(window.location.search).get('ref');
-    if (rf) {
-      formAction('ml');
-      formAction('mm');
-      function formAction(i) {
-        f=document.getElementById(i);
-        f.addEventListener('submit', (e) => {
-          e.preventDefault();
-          const ur = new URL(f.action, window.location.origin);
-          ur.searchParams.set('ref', rf);
-          f.action = ur.toString();
-          window.open(f.action, '_blank');
-        });
-      }
+    const r = new URLSearchParams(window.location.search).get('ref');
+    a('l');
+    a('m');
+    function a(i) {
+      const f = document.getElementById(i);
+      f.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const u = new URL(f.action, window.location.origin),
+          c = document.getElementById('c');
+        if (c.value) u.searchParams.set('email', c.value);
+        if (r) u.searchParams.set('ref', r);
+        f.action = u.toString();
+        window.open(f.action, '_blank');
+      });
     }
   </script>
 </body>

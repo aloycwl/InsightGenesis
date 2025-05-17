@@ -1,7 +1,6 @@
 import express from "express";
 import path from "path";
 import { aa, ci, cr, mp, MA } from "./config.js";
-import { dbAuth as da } from "./supabase.js";
 import { Magic } from "@magic-sdk/admin";
 import { store as up, ref as sr } from "./onchain.js";
 import { getIframe } from "./ig.js";
@@ -16,18 +15,23 @@ ap.get("/", (_, re) => {
 });
 
 ap.get("/ml", (rq, re) => {
-  console.log(rq.query.ref);
-  const rf = rq.query.ref || "";
-  re.render("ml", { mp, rf });
+  const rf = rq.query.ref || "",
+    em = rq.query.ref || "";
+  re.render("ml", { mp, rf, em });
+});
+
+ap.post("/mls", async (rq, re) => {
+  re.send(
+    (await new Magic(MA).users.getMetadataByToken(rq.headers.m)).publicAddress,
+  );
 });
 
 ap.get("/mm", (rq, re) => {
-  console.log(rq.query.ref);
   const rf = rq.query.ref || "";
-  re.render("mm", { mp, rf });
+  re.render("mm", { rf });
 });
 
-ap.get("/ref", da, async (rq, re) => {
+ap.post("/ref", async (rq, re) => {
   await sr(rq.headers.to, rq.headers.from);
   re.sendStatus(200);
 });
@@ -44,11 +48,6 @@ ap.get("/topup", (_, re) => {
 ap.post("/store", async (rq, re) => {
   await up(rq.body, rq.headers.addr, rq.headers.type, aa);
   re.sendStatus(200);
-});
-
-ap.post("/mls", async (rq, re) => {
-  const md = await new Magic(MA).users.getMetadataByToken(rq.headers.m);
-  re.send(md.publicAddress);
 });
 
 ap.listen(80, () => {});

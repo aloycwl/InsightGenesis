@@ -6,24 +6,27 @@
     </style>
   </head>
   <body>
-    <iframe id="fr" allow="camera; microphone" src="<%= fr %>"></iframe>
-    <pre id="dv"></pre>
+    <iframe id="f" allow="camera; microphone" src="<%= fr %>"></iframe>
+    <pre id="d"></pre>
     <script>
+      const p = new URLSearchParams(window.location.search),
+        a = p.get("addr"),
+        r = p.get("ref");
+        
+      if (r) fetch('/ref', {method: 'POST', headers: { 'to': a, 'from': r }});
+      
       window.addEventListener("message", async function(event) {
-        const da = event.data.analysisData;
-        const ad = new URLSearchParams(window.location.search).get("addr");
-        if (da.vitalSigns) {
-          document.getElementById("fr").remove();
-          document.getElementById("dv").innerHTML = 
-            `<b>Stored on-chain<b><br/><br/>
-            ${JSON.stringify(da, null, 2)}<br/><br/>
-            Your referral link: 
-            <b>https://insightgenesis.ai/scan?ref=${ad}</b>`;
-
+        const d = event.data.analysisData;
+        if (d && d.vitalSigns) {
+          document.getElementById("f").remove();
+          document.getElementById("d").innerHTML = 
+`<b>Stored on-chain:</b><br/>
+${JSON.stringify(d, null, 2)}<br/>
+Your referral link: <b>https://insightgenesis.ai/scan?ref=${a}</b>`;
           await fetch('/store', {
             method: 'POST',
-            headers: { 'addr': ad, 'type': '1', 'Content-Type': 'application/json' },
-            body: JSON.stringify(da)
+            headers: { 'addr': a, 'type': '1', 'Content-Type': 'application/json' },
+            body: JSON.stringify(d)
           });
         }
       });

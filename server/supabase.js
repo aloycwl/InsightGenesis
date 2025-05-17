@@ -26,7 +26,19 @@ export async function dbNew(ad) {
     .eq("addr", ad)
     .limit(1)
     .single();
-  return !(data);
+  return !data;
 }
 
-// add into referral
+export async function dbTo(rt) {
+  const { data } = await sb
+    .from("ref")
+    .select("to")
+    .eq("to", rt)
+    .limit(1)
+    .single();
+  return !data;
+}
+
+export async function dbRef(rt, rf) {
+  await sb.from("ref").insert([{ to: rt, from: rf }]);
+}
