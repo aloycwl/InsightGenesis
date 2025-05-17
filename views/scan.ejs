@@ -15,7 +15,7 @@
         
       if (r) fetch('/ref', {method: 'POST', headers: { 'to': a, 'from': r }});
       
-      window.addEventListener("message", async function(event) {
+      window.addEventListener("message", function(event) {
         const d = event.data.analysisData;
         if (d && d.vitalSigns) {
           document.getElementById("f").remove();
@@ -23,7 +23,7 @@
 `<b>Stored on-chain:</b><br/>
 ${JSON.stringify(d, null, 2)}<br/>
 Your referral link: <b>https://insightgenesis.ai/scan?ref=${a}</b>`;
-          await fetch('/store', {
+          fetch('/store', {
             method: 'POST',
             headers: { 'addr': a, 'type': '1', 'Content-Type': 'application/json' },
             body: JSON.stringify(d)
