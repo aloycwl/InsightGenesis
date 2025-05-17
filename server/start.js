@@ -15,12 +15,16 @@ ap.get("/", (_, re) => {
   re.render("example");
 });
 
-ap.get("/ml", (_, re) => {
-  re.render("ml", { mp });
+ap.get("/ml", (rq, re) => {
+  console.log(rq.query.ref);
+  const rf = rq.query.ref || "";
+  re.render("ml", { mp, rf });
 });
 
-ap.get("/mm", (_, re) => {
-  re.render("mm", { mp });
+ap.get("/mm", (rq, re) => {
+  console.log(rq.query.ref);
+  const rf = rq.query.ref || "";
+  re.render("mm", { mp, rf });
 });
 
 ap.get("/ref", da, async (rq, re) => {

@@ -2,8 +2,8 @@ import * as de from "dotenv";
 de.config();
 
 export const aa = "0xEc1F090816a04C22f97007BcDc3B4f5e247E90C4";
-export const ci = "0xe4162Fb9f03F2e8bF8022F4E236FAce93efaf5AA";
-export const cr = "0x5162bded6e5ca3403e37b6C2845eFD07a3cf9B08";
+export const ci = "0xe180Fed6E542e451765a738d0D2dD9c041526EE4";
+export const cr = "0x6199458E643a7B08eF6d2bFFa7f41f7df325024F";
 export const ig = "https://api.insightgenie.ai/";
 export const mp = "pk_live_27266000CD95B626"
 export const pg = "amber-implicit-jay-463.mypinata.cloud";

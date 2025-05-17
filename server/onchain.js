@@ -29,10 +29,10 @@ export async function store(rd, ra, rt, aa) {
   if (await dn(ra)) {
     const co = new et.Contract(
       ci,
-      ["function store(address, address) external"],
+      ["function deduct(address, address) external"],
       pv,
     );
-    const tx = await co.connect(new et.Wallet(PK, pv)).store(ra, aa);
+    const tx = await co.connect(new et.Wallet(PK, pv)).deduct(ra, aa);
     await tx.wait();
   }
 

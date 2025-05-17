@@ -1,13 +1,31 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <body>
-  <form action="/ml" target="_blank" method="get">
+  <form id="ml" action="/ml" method="get">
     <button type="submit">Example 1: Scan with Magic Link</button>
     <input name="email" placeholder="Enter your email" required />
   </form>
   <hr>
-  <form action="/mm" target="_blank">
+  <form id="mm" action="/mm">
     <button type="submit">Example 2: Scan with Metamask</button>
   </form>
+  
+  <script>
+    const rf = new URLSearchParams(window.location.search).get('ref');
+    if (rf) {
+      formAction('ml');
+      formAction('mm');
+      function formAction(i) {
+        f=document.getElementById(i);
+        f.addEventListener('submit', (e) => {
+          e.preventDefault();
+          const ur = new URL(f.action, window.location.origin);
+          ur.searchParams.set('ref', rf);
+          f.action = ur.toString();
+          window.open(f.action, '_blank');
+        });
+      }
+    }
+  </script>
 </body>
 </html>
