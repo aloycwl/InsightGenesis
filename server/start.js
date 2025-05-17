@@ -4,7 +4,7 @@ import { aa, ci, cr, mp, MA } from "./config.js";
 import { dbAuth as da } from "./supabase.js";
 import { Magic } from "@magic-sdk/admin";
 import { store as up, ref as sr } from "./onchain.js";
-import { digiPrint, getIframe } from "./ig.js";
+import { getIframe } from "./ig.js";
 
 const ap = express();
 ap.set("view engine", "ejs");
@@ -43,19 +43,8 @@ ap.post("/store", async (rq, re) => {
 });
 
 ap.post("/mls", async (rq, re) => {
-  const md = await new Magic(MA).users.getMetadataByToken(
-    rq.headers.m,
-  );
+  const md = await new Magic(MA).users.getMetadataByToken(rq.headers.m);
   re.send(md.publicAddress);
-});
-
-/* FOR TESTING ONLY */
-ap.post("/digiPrint", da, async (_, rs) => {
-  rs.send(await digiPrint());
-});
-
-ap.post("/getIframe", da, async (_, rs) => {
-  rs.send(await getIframe());
 });
 
 ap.listen(80, () => {});
