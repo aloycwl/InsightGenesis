@@ -5,9 +5,7 @@ import {Ownable} from "@openzeppelin/contracts/access/Ownable.sol";
 import {IERC20} from "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 
 contract InsightData is Ownable {
-    constructor(address _addr, uint256 _amt) payable Ownable(msg.sender) {
-        org[_addr] += _amt;
-    }
+    constructor() payable Ownable(msg.sender) {}
 
     uint256 public AmtReward = 10 ether;
     uint256 public AmtReferral = 5 ether;
@@ -16,9 +14,9 @@ contract InsightData is Ownable {
     mapping(address => address) public referral;
     IERC20 public igair;
 
-    function topup(uint256 _amt) external payable {
+    function topup(uint256 _amt, address _addr) external payable {
         igair.transferFrom(msg.sender, address(this), _amt);
-        org[msg.sender] += _amt;
+        org[_addr] += _amt;
     }
 
     function deduct(address _addr, address _coy) external payable onlyOwner {

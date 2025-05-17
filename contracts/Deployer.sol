@@ -8,11 +8,13 @@ contract Deployer {
     InsightData public insightData;
 
     constructor() {
-        (IGAI _igai, uint _amt) = (new IGAI(), 1e4 ether);
-        insightData = new InsightData(msg.sender, _amt);
-
+        (IGAI _igai, uint _amt) = (new IGAI(), 1e7 ether);
+        insightData = new InsightData();
         insightData.setIGAIr(address(_igai));
-        _igai.mint(address(insightData), 1e3 ether);
+
+        _igai.mint(address(this), _amt);
+        _igai.approve(address(insightData), _amt);
+        insightData.topup(_amt, msg.sender);
 
         _igai.transferOwnership(msg.sender);
         insightData.transferOwnership(msg.sender);
