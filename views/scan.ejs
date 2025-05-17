@@ -2,26 +2,12 @@
 <html>
   <head>
     <style>
-      html, body {
+      html, body, iframe {
         margin: 0;
         padding: 0;
         height: 100%;
         width: 100%;
         overflow: hidden;
-        font-family: sans-serif;
-      }
-
-      #viewer {
-        padding: 1rem;
-        white-space: pre-wrap;
-        word-break: break-word;
-      }
-
-      iframe {
-        display: block;
-        border: none;
-        width: 100%;
-        height: 100%;
       }
     </style>
   </head>
@@ -29,12 +15,22 @@
     <iframe id="fr" allow="camera; microphone" src="<%= fr %>"></iframe>
     <pre id="dv"></pre>
     <script>
-      window.addEventListener("message", function(event) {
+      window.addEventListener("message", async function(event) {
         const da = event.data.analysisData;
         if (da && JSON.stringify(da).length > 100) {
           console.log("Received analysisData:", da);
           document.getElementById("fr").remove();
           document.getElementById("dv").innerHTML = `${JSON.stringify(da, null, 2)}`;
+
+          await fetch('/store', {
+            method: 'POST',
+            headers: {
+              'addr': new URLSearchParams(window.location.search).get("addr"),
+              'type': '1',
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(da),
+          });
         }
       });
     </script>

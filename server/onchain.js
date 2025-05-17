@@ -5,7 +5,9 @@ import { PinataSDK as ps } from "pinata";
 
 const pv = new et.JsonRpcProvider(pr);
 
-export async function referral(re, rl) {
+export async function ref(re, rl) {
+  // check if referral exists
+  
   const co = new et.Contract(
     ci,
     ["function setRef(address, address) external"],
@@ -16,7 +18,7 @@ export async function referral(re, rl) {
   await tx.wait();
 }
 
-export async function upload(rd, ra, rt, aa) {
+export async function store(rd, ra, rt, aa) {
   const { cid } = await new ps({
     pinataJwt: PJ,
     pinataGateway: pg,

@@ -1,9 +1,9 @@
 import express from "express";
 import path from "path";
-import { ci, cr, mp, MA } from "./config.js";
+import { aa, ci, cr, mp, MA } from "./config.js";
 import { dbAuth as da } from "./supabase.js";
 import { Magic } from "@magic-sdk/admin";
-import { upload as up, referral as sr } from "./onchain.js";
+import { store as up, ref as sr } from "./onchain.js";
 import { digiPrint, getIframe } from "./ig.js";
 
 const ap = express();
@@ -23,7 +23,7 @@ ap.get("/mm", (_, re) => {
   re.render("mm", { mp });
 });
 
-ap.get("/referral", da, async (rq, re) => {
+ap.get("/ref", da, async (rq, re) => {
   await sr(rq.headers.to, rq.headers.from);
   re.sendStatus(200);
 });
@@ -37,8 +37,8 @@ ap.get("/topup", (_, re) => {
   re.render("topup", { ci, cr });
 });
 
-ap.post("/upload", da, async (rq, re) => {
-  await up(rq.body, rq.headers.addr, rq.headers.type, rq.addr);
+ap.post("/store", async (rq, re) => {
+  await up(rq.body, rq.headers.addr, rq.headers.type, aa);
   re.sendStatus(200);
 });
 
