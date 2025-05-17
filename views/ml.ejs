@@ -1,0 +1,26 @@
+<!doctype html>
+<html>
+  <head>
+    <script src="https://cdn.jsdelivr.net/npm/magic-sdk/dist/magic.js"></script>
+  </head>
+  <body>
+    Loading...
+    <script>
+      (async () => {
+        const email = new URLSearchParams(window.location.search).get("email");
+        const ml = new Magic("<%= mp %>");
+        try {
+          await ml.auth.loginWithMagicLink({ email });
+          const re = await (await fetch("/mls", {
+            method: "POST",
+            headers: { m: await ml.user.getIdToken() },
+            body: JSON.stringify({ email })
+          })).text();
+          window.location.href = `/scan?addr=${re}`;
+        } catch (e) {
+          window.close();
+        }
+      })();
+    </script>
+  </body>
+</html>

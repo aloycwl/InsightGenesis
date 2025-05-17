@@ -28,3 +28,5 @@ export async function dbNew(ad) {
     .single();
   return !(data);
 }
+
+// add into referral

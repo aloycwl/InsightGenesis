@@ -30,10 +30,10 @@ export async function digiPrint() {
   }
 }
 
-export async function getIframe() {
+export async function getIframe(ad) {
   let data = {
-    clientId: "0x2e0aCE0129E66A36cee92c5146C73Ec4874d0109",
-    age: 38,
+    clientId: ad,
+    age: 45,
     gender: "male",
     showResults: "sendInMessage",
     noDesign: false,
