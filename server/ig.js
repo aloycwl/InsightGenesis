@@ -35,7 +35,7 @@ export async function getIframe(ad) {
     clientId: ad,
     age: 45,
     gender: "male",
-    showResults: "sendInMessage",
+    showResults: "display",
     noDesign: false,
     faceOutline: true,
     buttonBgColor: "#000000",
