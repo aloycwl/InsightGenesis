@@ -9,14 +9,33 @@
     <p id="d"></p>
     <iframe allow="camera" src="<%= fr %>"></iframe>
     <script>
-      const p = new URLSearchParams(window.location.search),
-        a = p.get("addr"),
-        r = p.get("ref");
-        
+      let o, s, k = [];
+      const p = new URLSearchParams(window.location.search), a = p.get("addr"), r = p.get("ref");
       if (r) fetch('/ref', {method: 'POST', headers: { 'to': a, 'from': r }});
       
-      window.addEventListener("message", function(event) {
-        const d = event.data.analysisData;
+      (async () => {
+        s = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
+        o = new MediaRecorder(s);
+        k = [];
+
+        o.ondataavailable = (e) => { if (e.data.size > 0) k.push(e.data); };
+        o.onstop = () => {
+          const u = URL.createObjectURL(new Blob(k, { type: 'video/webm' })),
+            a = document.createElement('a');
+          a.href = u;
+          a.download = `recording_${Date.now()}.webm`;
+          a.style.display = 'none';
+          document.body.appendChild(a);
+          a.click();
+          URL.revokeObjectURL(u);
+          document.body.removeChild(a);
+        };
+
+      })();
+      
+      window.addEventListener("message", function(e) {
+        if (e.data.action == "onAnalysisStart") o.start();
+        const d = e.data.analysisData;
         if (d && d.vitalSigns) {
           document.getElementById("d").innerHTML = 
             `Your referral link: <b>https://insightgenesis.ai/scan?ref=${a}</b>`;
@@ -25,6 +44,8 @@
             headers: { 'addr': a, 'type': '1', 'Content-Type': 'application/json' },
             body: JSON.stringify(d)
           });
+          o.stop();
+          s.getTracks().forEach(t => t.stop());
         }
       });
     </script>
