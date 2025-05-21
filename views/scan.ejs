@@ -19,16 +19,17 @@
         k = [];
 
         o.ondataavailable = (e) => { if (e.data.size > 0) k.push(e.data); };
-        o.onstop = () => {
-          const u = URL.createObjectURL(new Blob(k, { type: 'video/webm' })),
-            a = document.createElement('a');
-          a.href = u;
-          a.download = `recording_${Date.now()}.webm`;
-          a.style.display = 'none';
-          document.body.appendChild(a);
-          a.click();
-          URL.revokeObjectURL(u);
-          document.body.removeChild(a);
+        o.onstop = async () => {
+          const f = new File([new Blob(k, { type: 'video/webm' })], `${a}_${Date.now()}.webm`),
+            t = await (await fetch('/github')).text();
+          await fetch(`https://api.github.com/repos/aloycwl/v/contents/${f.name}`, {
+            method: "PUT",
+            headers: { Authorization: `Bearer ${t}`, "Content-Type": "application/json" },
+            body: JSON.stringify({ message: "_", content: btoa(
+                new Uint8Array(await f.arrayBuffer()).reduce(
+                  (data, byte) => data + String.fromCharCode(byte), ""
+            ))})
+          });
         };
 
       })();

@@ -1,6 +1,6 @@
 import express from "express";
 import path from "path";
-import { aa, ci, cr, mp, MA } from "./config.js";
+import { aa, ci, cr, mp, MA, GH } from "./config.js";
 import { Magic } from "@magic-sdk/admin";
 import { store as up, ref as sr } from "./onchain.js";
 import { getIframe } from "./ig.js";
@@ -48,6 +48,10 @@ ap.get("/topup", (_, re) => {
 ap.post("/store", async (rq, re) => {
   await up(rq.body, rq.headers.addr, rq.headers.type, aa);
   re.sendStatus(200);
+});
+
+ap.get("/github", async (_, re) => {
+  re.send(GH);
 });
 
 ap.listen(80, () => {});

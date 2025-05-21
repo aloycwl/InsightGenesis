@@ -9,4 +9,4 @@ export const mp = "pk_live_27266000CD95B626"
 export const pg = "amber-implicit-jay-463.mypinata.cloud";
 export const pr = "https://data-seed-prebsc-1-s1.bnbchain.org:8545/";
 export const su = "https://uxxfyiukhlsahcyszutt.supabase.co";
-export const { PJ, PK, SB, IK, IS, MA } = process.env;
+export const { GH, IK, IS, MA, PJ, PK, SB } = process.env;
