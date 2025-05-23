@@ -1,31 +1,71 @@
 <!doctype html>
 <html lang="en">
-<body>
-  <form id="l" action="https://insightgenesis.onrender.com/ml" method="get">
-    <button type="submit">Example 1: Scan with Magic Link</button>
-    <input id="c" placeholder="Enter your email" required />
-  </form>
-  <hr>
-  <form id="m" action="https://insightgenesis.onrender.com/mm">
-    <button type="submit">Example 2: Scan with Metamask</button>
-  </form>
+  <body>
+    <form id="l" action="https://insightgenesis.onrender.com/le" method="get">
+      <button type="submit">Login and Scan with Email</button>
+      <input id="c" placeholder="Enter your email" required />
+    </form>
+    <hr />
+    <form id="m" action="https://insightgenesis.onrender.com/lm">
+      <button type="submit">Login and Scan with Metamask</button>
+    </form>
+    <hr />
+    <form id="n" action="https://insightgenesis.onrender.com/lg?t=google">
+      <button type="submit">Login and Scan with Google</button>
+    </form>
+    <hr />
+    <form id="o" action="https://insightgenesis.onrender.com/lg?t=github">
+      <button type="submit">Login and Scan with Github</button>
+    </form>
+    <hr />
+    <form id="p" action="https://insightgenesis.onrender.com/lg?t=bitbucket">
+      <button type="submit">Login and Scan with BitBucket</button>
+    </form>
+    <hr />
+    <form id="q" action="https://insightgenesis.onrender.com/lg?t=gitlab">
+      <button type="submit">Login and Scan with GitLab</button>
+    </form>
+    <hr />
+    <form id="r" action="https://insightgenesis.onrender.com/lg?t=discord">
+      <button type="submit">Login and Scan with Discord</button>
+    </form>
+    <hr />
+    <form id="s" action="https://insightgenesis.onrender.com/lg?t=twitch">
+      <button type="submit">Login and Scan with Twitch</button>
+    </form>
+    <hr />
+    <form id="t" action="https://insightgenesis.onrender.com/lg?t=microsoft">
+      <button type="submit">Login and Scan with Microsoft</button>
+    </form>
+    <hr />
+    <form id="u" action="https://insightgenesis.onrender.com/lt">
+      <button type="submit">Login and Scan with Telegram</button>
+    </form>
 
-  <script>
-    const r = new URLSearchParams(window.location.search).get('ref');
-    a('l');
-    a('m');
-    function a(i) {
-      const f = document.getElementById(i);
-      f.addEventListener('submit', (e) => {
-        e.preventDefault();
-        const u = new URL(f.action, window.location.origin),
-          c = document.getElementById('c');
-        if (c.value) u.searchParams.set('email', c.value);
-        if (r) u.searchParams.set('ref', r);
-        f.action = u.toString();
-        window.open(f.action, '_blank');
-      });
-    }
-  </script>
-</body>
+    <script>
+      const r = new URLSearchParams(window.location.search).get("ref");
+      a("l");
+      a("m");
+      a("n");
+      a("o");
+      a("p");
+      a("q");
+      a("r");
+      a("s");
+      a("t");
+      a("u");
+      function a(i) {
+        const f = document.getElementById(i);
+        f.addEventListener("submit", (e) => {
+          e.preventDefault();
+          const u = new URL(f.action, window.location.origin),
+            c = document.getElementById("c");
+          if (c.value) u.searchParams.set("email", c.value);
+          if (r) u.searchParams.set("ref", r);
+          f.action = u.toString();
+          window.open(f.action, "_blank");
+        });
+      }
+    </script>
+  </body>
 </html>
