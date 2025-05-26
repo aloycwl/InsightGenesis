@@ -21,6 +21,7 @@ To see button examples: please visit [Current Githug Page Example](https://aloyc
 To start the server, run:
 
 ```bash
+npm install && cd frontend && npm install && cd .. && npm run build
 npm start
 ```
 
@@ -92,7 +93,7 @@ Copy and paste the following HTML code:
 
 ## 3. Topup credit to produce reports
 
-### URL: https://insightgenesis.onrender.com/topup{?amt=AMT}
+### URL: https://api.insightgenesis.ai/topup{?amt=AMT}
 
 Description:
 - For organisation to top up using IGAI token as the credit to use our services
