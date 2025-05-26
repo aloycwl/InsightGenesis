@@ -41,6 +41,10 @@
     <form id="u" action="https://api.insightgenesis.ai/lt">
       <button type="submit">Login and Scan with Telegram</button>
     </form>
+    <hr />
+    <form id="v" action="https://api.insightgenesis.ai/lg?t=twitter">
+      <button type="submit">Login and Scan with Telegram</button>
+    </form>
 
     <script>
       const r = new URLSearchParams(window.location.search).get("ref");
@@ -54,6 +58,7 @@
       a("s");
       a("t");
       a("u");
+      a("v");
       function a(i) {
         const f = document.getElementById(i);
         f.addEventListener("submit", (e) => {
