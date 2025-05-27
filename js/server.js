@@ -11,7 +11,7 @@ ap.use(express.json());
 
 ap.use(
   express.static(
-    path.join(path.dirname(P(import.meta.url)), "../"),
+    path.join(path.dirname(P(import.meta.url)), "../frontend/build"),
   ),
 );
 
@@ -39,7 +39,7 @@ ap.post("/store", async (q, r) => {
 
 ap.get("*", (_, r) => {
   r.sendFile(
-    path.join(path.dirname(P(import.meta.url)), "../index.html"),
+    path.join(path.dirname(P(import.meta.url)), "../frontend/build/index.html"),
   );
 });
 

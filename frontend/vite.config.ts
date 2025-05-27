@@ -6,7 +6,7 @@ export default defineConfig({
     react()
   ],
   build: {
-    outDir: "../",
+    outDir: "build",
     sourcemap: false,
     rollupOptions: {
       output: {
