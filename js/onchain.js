@@ -1,6 +1,6 @@
 import { ci, pg, pr, PJ, PK } from "./config.js";
 import { dbIGAI, dbNew, dbTo, dbRef } from "./supabase.js";
-import { PinataSDK as P } from "pinata";
+import axios from "axios";
 import ethers from "ethers";
 const { providers, Contract, Wallet } = ethers;
 const { JsonRpcProvider } = providers;
@@ -16,13 +16,17 @@ export async function ref(rt, rf) {
   }
 }
 
-export async function store(rd, ra, rt, aa) {
-  const { cid } = await new P({
-    pinataJwt: PJ,
-    pinataGateway: pg,
-  }).upload.public.file(
-    new Blob([JSON.stringify(rd)], { type: "application/json" }),
-  );
+export async function store(d, ra, rt, aa) {
+  const c = await axios.post(
+    "https://api.pinata.cloud/pinning/pinJSONToIPFS",
+    { pinataContent: d },
+    {
+      headers: {
+        Authorization: `Bearer ${PJ}`,
+        "Content-Type": "application/json",
+      },
+    },
+  ).data.IpfsHash;
 
   if (await dbNew(ra)) {
     const co = new Contract(ci, ["function deduct(address, address)"], pv),
@@ -30,5 +34,5 @@ export async function store(rd, ra, rt, aa) {
     await tx.wait();
   }
 
-  dbIGAI(cid, ra, rt);
+  dbIGAI(c, ra, rt);
 }

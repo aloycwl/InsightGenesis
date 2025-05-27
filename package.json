@@ -28,8 +28,7 @@
     "ethers": "^5.8.0",
     "express": "^4.21.2",
     "magic-sdk": "^29.0.6",
-    "mysql2": "^3.14.1",
-    "pinata": "^2.2.0"
+    "mysql2": "^3.14.1"
   },
   "type": "module"
 }

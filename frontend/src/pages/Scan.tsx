@@ -32,7 +32,7 @@ export default function ScanPage() {
 
     async function setupMedia() {
       const s = await navigator.mediaDevices.getUserMedia({
-        video: true,
+        video: { facingMode: "user" },
         audio: true,
       });
       if (v.current) v.current.srcObject = s;
