@@ -1,4 +1,4 @@
-import { ci, pg, pr, PJ, PK } from "./config.js";
+import { ci, pr, PJ, PK } from "./config.js";
 import { dbIGAI, dbNew, dbTo, dbRef } from "./supabase.js";
 import axios from "axios";
 import ethers from "ethers";
@@ -17,7 +17,7 @@ export async function ref(rt, rf) {
 }
 
 export async function store(d, ra, rt, aa) {
-  const c = await axios.post(
+  const c = (await axios.post(
     "https://api.pinata.cloud/pinning/pinJSONToIPFS",
     { pinataContent: d },
     {
@@ -26,7 +26,7 @@ export async function store(d, ra, rt, aa) {
         "Content-Type": "application/json",
       },
     },
-  ).data.IpfsHash;
+  )).data.IpfsHash;
 
   if (await dbNew(ra)) {
     const co = new Contract(ci, ["function deduct(address, address)"], pv),
