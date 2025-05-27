@@ -12,25 +12,23 @@ export default function ScanPage() {
     v = R<HTMLVideoElement | null>(null),
     r = R<MediaRecorder | null>(null),
     k = R<Blob[]>([]),
-    [l, m] = S("");
+    [l, m] = S(""),
+    [n, o] = S<boolean>(false);
 
   E(() => {
     b(sessionStorage.getItem("a"));
     h(sessionStorage.getItem("r"));
+    o(/Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent));
   }, []);
 
   E(() => {
     if (!a) return;
-
     if (g) fetch("/ref", { method: "POST", headers: { to: a, from: g } });
 
-    fetch("/iframe", { method: "POST", headers: { addr: a } })
-      .then((w) => w.text())
-      .then((w) => {
-        d(w);
-      });
-
     async function setupMedia() {
+      d(await (await fetch("/iframe")).text());
+      if (n) return;
+
       const s = await navigator.mediaDevices.getUserMedia({
         video: { facingMode: "user" },
         audio: true,
@@ -94,7 +92,7 @@ export default function ScanPage() {
   return (
     <>
       <p id="d">{l}</p>
-      <iframe allow="camera;microphone" src={c} />
+      <iframe allow="camera;microphone;fullscreen;display-capture" src={c} />
     </>
   );
 }

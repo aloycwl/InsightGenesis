@@ -19,8 +19,8 @@ ap.get("/github", async (_, r) => {
   r.send(GH);
 });
 
-ap.post("/iframe", async (q, r) => {
-  r.send(await F(q.headers.addr));
+ap.get("/iframe", async (_, r) => {
+  r.send(await F());
 });
 
 ap.post("/ref", async (q, r) => {
