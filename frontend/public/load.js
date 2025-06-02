@@ -9,7 +9,9 @@ function E(e) {
 }
 localStorage.setItem("u", l);
 if (r) localStorage.setItem("r", r);
-[("a", "d")].forEach((i) => (E(i).style.display = a ? "inline-block" : "none"));
+["a", "d"].forEach((i) => {
+  E(i).style.display = a ? "inline-block" : "none";
+});
 E("c").style.display = a ? "none" : "inline-block";
 b.search = "";
 E("d").href = b.toString();

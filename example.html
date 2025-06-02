@@ -33,16 +33,22 @@
 
     <div id="a">
       <form action="/scan" target="_blank">
-        <button>Click for health scan</button>
+        <select id="g" name="g"></select>
+        <select id="y" name="y"></select>
+        <button>Scan health</button>
       </form>
-      <form id="v">
-        <button>Click for voice scan</button>
+      <form action="/voice" target="_blank">
+        <select id="v" name="v"></select>
+        <button>Scan voice</button>
       </form>
-      <form>
-        <button>Click for digital foot print</button>
+      <form action="/print" target="_blank">
+        <input name="e" placeholder="Email" required />
+        <input name="c" placeholder="Phone code" required />
+        <input name="n" placeholder="Phone number" required />
+        <button>Scan digital foot print</button>
       </form>
       Your referral link: <a id="k"></a>
     </div>
-    <script src="/load.min.js""></script>
+    <script src="/load.js""></script>
   </body>
 </html>
