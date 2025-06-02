@@ -5,28 +5,25 @@ interface M {
   analysisData?: { vitalSigns?: any };
 }
 
-export default function ScanPage() {
+export default () => {
   const [a, b] = S<string | null>(null),
     [c, d] = S<string>(""),
-    [g, h] = S<string | null>(null),
     v = R<HTMLVideoElement | null>(null),
     r = R<MediaRecorder | null>(null),
     k = R<Blob[]>([]),
-    [l, m] = S(""),
     [n, o] = S<boolean>(false);
 
   E(() => {
-    b(sessionStorage.getItem("a"));
-    h(sessionStorage.getItem("r"));
+    b(localStorage.getItem("a"));
     o(/Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent));
   }, []);
 
   E(() => {
     if (!a) return;
-    if (g) fetch("/ref", { method: "POST", headers: { to: a, from: g } });
 
     async function setupMedia() {
-      d(await (await fetch("/iframe")).text());
+      const p = new URLSearchParams(window.location.search);
+      d(await (await fetch(`/iframe?g=${p.get("g")}&y=${p.get("y")}`)).text());
       if (n) return;
 
       const s = await navigator.mediaDevices.getUserMedia({
@@ -73,7 +70,6 @@ export default function ScanPage() {
       const d = event.data;
       if (d.action === "onAnalysisStart") r.current.start();
       if (d.analysisData && d.analysisData.vitalSigns) {
-        m(`Your referral link: https://insightgenesis.ai/?ref=${a}`);
         fetch("/store", {
           method: "POST",
           headers: { addr: a, type: "1", "Content-Type": "application/json" },
@@ -90,9 +86,6 @@ export default function ScanPage() {
   }, [a]);
 
   return (
-    <>
-      <p id="d">{l}</p>
       <iframe allow="camera;microphone;fullscreen;display-capture" src={c} />
-    </>
   );
 }

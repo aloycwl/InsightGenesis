@@ -21,14 +21,22 @@
   "dependencies": {
     "@magic-ext/oauth2": "^11.0.6",
     "@magic-sdk/admin": "^2.4.1",
-    "@supabase/supabase-js": "^2.49.4",
+    "@supabase/supabase-js": "^2.49.8",
     "axios": "^1.9.0",
+    "cors": "^2.8.5",
     "dotenv": "^16.5.0",
     "ejs": "^3.1.10",
     "ethers": "^5.8.0",
+    "execa": "^9.6.0",
     "express": "^4.21.2",
+    "fetch-blob": "^4.0.0",
+    "ffmpeg-static": "^5.2.0",
+    "form-data-encoder": "^4.0.2",
+    "formdata-node": "^6.0.3",
     "magic-sdk": "^29.0.6",
-    "mysql2": "^3.14.1"
+    "multer": "^2.0.0",
+    "mysql2": "^3.14.1",
+    "undici": "^7.10.0"
   },
   "type": "module"
 }

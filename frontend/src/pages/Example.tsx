@@ -1,0 +1,63 @@
+import { useEffect } from "react";
+
+export default () => {
+  useEffect(() => {
+    const script = document.createElement("script");
+    script.src = "/load.min.js";
+    script.async = true;
+    document.body.appendChild(script);
+  }, []);
+
+  return (
+    <>
+      <form id="c" action="/lg">
+        <button name="email">Login Email</button>
+        <br />
+        <input id="e" placeholder="Enter your email" />
+        <br />
+        <button name="metamask">Login with Metamask</button>
+        <br />
+        <button name="google">Login with Google</button>
+        <br />
+        <button name="github">Login with Github</button>
+        <br />
+        <button name="bitbucket">Login with BitBucket</button>
+        <br />
+        <button name="gitlab">Login with GitLab</button>
+        <br />
+        <button name="discord">Login with Discord</button>
+        <br />
+        <button name="twitch">Login with Twitch</button>
+        <br />
+        <button name="microsoft">Login with Microsoft</button>
+        <br />
+        <button name="telegram">Login with Telegram</button>
+        <br />
+        <button name="twitter">Login with Twitter</button>
+        <br />
+      </form>
+
+      <a id="d">Logout</a>
+      <br />
+
+      <div id="a">
+        <form action="/scan" target="_blank">
+          <select id="g" name="g"></select>
+          <select id="y" name="y"></select>
+          <button>Scan health</button>
+        </form>
+        <form action="/voice" target="_blank">
+          <select id="v" name="v"></select>
+          <button>Scan voice</button>
+        </form>
+        <form action="/print" target="_blank">
+          <input name="e" placeholder="Email" required />
+          <input name="c" placeholder="Phone code" required />
+          <input name="n" placeholder="Phone number" required />
+          <button>Scan digital foot print</button>
+        </form>
+        Your referral link: <a id="k"></a>
+      </div>
+    </>
+  );
+};

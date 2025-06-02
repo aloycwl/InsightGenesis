@@ -5,34 +5,37 @@ import ethers from "ethers";
 const { providers, Contract, Wallet } = ethers;
 const { JsonRpcProvider } = providers;
 
-const pv = new JsonRpcProvider(pr);
+const w = new Wallet(PK, new JsonRpcProvider(pr));
 
 export async function ref(rt, rf) {
-  if (await dbTo(rt)) {
+  if ((await dbTo(rt)) && rt != rf) {
     await dbRef(rt, rf);
-    const co = new Contract(ci, ["function setRef(address, address)"], pv),
-      tx = await co.connect(new Wallet(PK, pv)).setRef(rt, rf);
-    await tx.wait();
+    await new Contract(ci, ["function setRef(address, address)"], pv)
+      .connect(w)
+      .setRef(rt, rf);
   }
 }
 
 export async function store(d, ra, rt, aa) {
-  const c = (await axios.post(
-    "https://api.pinata.cloud/pinning/pinJSONToIPFS",
-    { pinataContent: d },
-    {
-      headers: {
-        Authorization: `Bearer ${PJ}`,
-        "Content-Type": "application/json",
-      },
-    },
-  )).data.IpfsHash;
+  if (await dbNew(ra))
+    await new Contract(ci, ["function deduct(address, address)"], pv)
+      .connect(w)
+      .deduct(ra, aa);
 
-  if (await dbNew(ra)) {
-    const co = new Contract(ci, ["function deduct(address, address)"], pv),
-      tx = await co.connect(new Wallet(PK, pv)).deduct(ra, aa);
-    await tx.wait();
-  }
-
-  dbIGAI(c, ra, rt);
+  dbIGAI(
+    (
+      await axios.post(
+        "https://api.pinata.cloud/pinning/pinJSONToIPFS",
+        { pinataContent: d },
+        {
+          headers: {
+            Authorization: `Bearer ${PJ}`,
+            "Content-Type": "application/json",
+          },
+        },
+      )
+    ).data.IpfsHash,
+    ra,
+    rt,
+  );
 }

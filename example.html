@@ -1,76 +1,48 @@
 <!doctype html>
 <html lang="en">
   <body>
-    <form id="l" action="https://api.insightgenesis.ai/le" method="get">
-      <button type="submit">Login and Scan with Email</button>
-      <input id="c" placeholder="Enter your email" required />
-    </form>
-    <hr />
-    <form id="m" action="https://api.insightgenesis.ai/lm">
-      <button type="submit">Login and Scan with Metamask</button>
-    </form>
-    <hr />
-    <form id="n" action="https://api.insightgenesis.ai/lg?t=google">
-      <button type="submit">Login and Scan with Google</button>
-    </form>
-    <hr />
-    <form id="o" action="https://api.insightgenesis.ai/lg?t=github">
-      <button type="submit">Login and Scan with Github</button>
-    </form>
-    <hr />
-    <form id="p" action="https://api.insightgenesis.ai/lg?t=bitbucket">
-      <button type="submit">Login and Scan with BitBucket</button>
-    </form>
-    <hr />
-    <form id="q" action="https://api.insightgenesis.ai/lg?t=gitlab">
-      <button type="submit">Login and Scan with GitLab</button>
-    </form>
-    <hr />
-    <form id="r" action="https://api.insightgenesis.ai/lg?t=discord">
-      <button type="submit">Login and Scan with Discord</button>
-    </form>
-    <hr />
-    <form id="s" action="https://api.insightgenesis.ai/lg?t=twitch">
-      <button type="submit">Login and Scan with Twitch</button>
-    </form>
-    <hr />
-    <form id="t" action="https://api.insightgenesis.ai/lg?t=microsoft">
-      <button type="submit">Login and Scan with Microsoft</button>
-    </form>
-    <hr />
-    <form id="u" action="https://api.insightgenesis.ai/lt">
-      <button type="submit">Login and Scan with Telegram</button>
-    </form>
-    <hr />
-    <form id="v" action="https://api.insightgenesis.ai/lg?t=twitter">
-      <button type="submit">Login and Scan with Telegram</button>
+    <form id="c" action="/lg">
+      <button name="email">Login Email</button>
+      <br />
+      <input id="e" placeholder="Enter your email" />
+      <br />
+      <button name="metamask">Login with Metamask</button>
+      <br />
+      <button name="google">Login with Google</button>
+      <br />
+      <button name="github">Login with Github</button>
+      <br />
+      <button name="bitbucket">Login with BitBucket</button>
+      <br />
+      <button name="gitlab">Login with GitLab</button>
+      <br />
+      <button name="discord">Login with Discord</button>
+      <br />
+      <button name="twitch">Login with Twitch</button>
+      <br />
+      <button name="microsoft">Login with Microsoft</button>
+      <br />
+      <button name="telegram">Login with Telegram</button>
+      <br />
+      <button name="twitter">Login with Twitter</button>
+      <br />
     </form>
 
-    <script>
-      const r = new URLSearchParams(window.location.search).get("ref");
-      a("l");
-      a("m");
-      a("n");
-      a("o");
-      a("p");
-      a("q");
-      a("r");
-      a("s");
-      a("t");
-      a("u");
-      a("v");
-      function a(i) {
-        const f = document.getElementById(i);
-        f.addEventListener("submit", (e) => {
-          e.preventDefault();
-          const u = new URL(f.action, window.location.origin),
-            c = document.getElementById("c");
-          if (c.value) u.searchParams.set("email", c.value);
-          if (r) u.searchParams.set("ref", r);
-          f.action = u.toString();
-          window.open(f.action, "_blank");
-        });
-      }
-    </script>
+    <a id="d">Logout</a>
+    <br />
+
+    <div id="a">
+      <form action="/scan" target="_blank">
+        <button>Click for health scan</button>
+      </form>
+      <form id="v">
+        <button>Click for voice scan</button>
+      </form>
+      <form>
+        <button>Click for digital foot print</button>
+      </form>
+      Your referral link: <a id="k"></a>
+    </div>
+    <script src="/load.min.js""></script>
   </body>
 </html>

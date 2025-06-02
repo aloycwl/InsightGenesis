@@ -2,7 +2,7 @@ import { useEffect as E } from "react";
 import { ethers as H } from "ethers";
 import { ci, cr } from "../../config";
 
-export default function Payment() {
+export default () => {
   E(() => {
     let A: string;
     let P: H.providers.Web3Provider;
@@ -76,5 +76,5 @@ export default function Payment() {
     init();
   }, []);
 
-  return <div>Paying...</div>;
+  return <>Paying...</>;
 }
