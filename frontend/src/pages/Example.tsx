@@ -3,7 +3,7 @@ import { useEffect } from "react";
 export default () => {
   useEffect(() => {
     const script = document.createElement("script");
-    script.src = "/load.js";
+    script.src = "https://git.insightgenesis.ai/frontend/build/load.min.js";
     script.async = true;
     document.body.appendChild(script);
   }, []);
