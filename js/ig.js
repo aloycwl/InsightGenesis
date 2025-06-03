@@ -42,7 +42,7 @@ export async function iframe(g, y) {
         age: parseInt(y),
         gender: g,
         showResults: "display",
-        isVoiceAnalysisOn: true,
+        isVoiceAnalysisOn: false,
         forceFrontCamera: true,
       },
       { headers: await auth() },
