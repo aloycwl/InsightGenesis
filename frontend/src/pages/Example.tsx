@@ -57,6 +57,9 @@ export default () => {
           <button>Scan digital foot print</button>
         </form>
         Your referral link: <a id="k"></a>
+        <form action="/wallet" target="_blank">
+          <button>Open Wallet</button>
+        </form>
       </div>
     </>
   );

@@ -5,6 +5,7 @@ import Print from "./pages/Print";
 import Scan from "./pages/Scan";
 import Topup from "./pages/Topup";
 import Voice from "./pages/Voice";
+import Wallet from "./pages/Wallet";
 
 export default function App() {
   return (
@@ -16,6 +17,7 @@ export default function App() {
         <R path="/print" element={<Print />} />
         <R path="/topup" element={<Topup />} />
         <R path="/voice" element={<Voice />} />
+        <R path="/wallet" element={<Wallet />} />
       </S>
     </B>
   );

@@ -3,7 +3,7 @@ import react from "@vitejs/plugin-react";
 
 export default defineConfig({
   base: "https://cdn.jsdelivr.net/gh/aloycwl/insightgenesis@main/frontend/build/",
-  plugins: [ react() ],
+  plugins: [react()],
   build: {
     outDir: "build",
     sourcemap: false,
@@ -15,8 +15,8 @@ export default defineConfig({
             if (id.includes("react")) return "vendor-react";
             return "vendor";
           }
-        }
-      }
-    }
-  }
+        },
+      },
+    },
+  },
 });
