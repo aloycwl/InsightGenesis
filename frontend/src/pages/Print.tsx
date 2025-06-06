@@ -10,7 +10,11 @@ export default () => {
         e = p.get("e"),
         c = p.get("c"),
         n = p.get("n"),
-        d = (await axios.get(`/foot?e=${e}&c=${c}&n=${n}`)).data;
+        d = (
+          await axios.get(`/foot?e=${e}&c=${c}&n=${n}`, {
+            headers: { auth: localStorage.getItem("s") || "" },
+          })
+        ).data;
 
       z(d);
 

@@ -6,7 +6,8 @@ const s = cc(su, SB);
 export const dbAuth = async (q, r, next) => {
   const k = q.headers.auth,
     { data } = await s.from("keys").select("credit").eq("k", k).single();
-  if (!data || data.credit <= 0) return r.sendStatus(401);
+  if (!data || typeof data.credit !== "number" || data.credit <= 0)
+    return r.sendStatus(401);
   await s
     .from("keys")
     .update({ credit: data.credit - 1 })

@@ -23,11 +23,11 @@ e.get("/github", async (_, r) => {
   r.send(GH);
 });
 
-e.get("/iframe", async (q, r) => {
+e.get("/iframe", A, async (q, r) => {
   r.send(await F(q.query.g, q.query.y));
 });
 
-e.get("/foot", async (q, r) => {
+e.get("/foot", A, async (q, r) => {
   r.send(await G(q.query.e, q.query.c, q.query.n));
 });
 
@@ -45,7 +45,7 @@ e.post("/store", async (q, r) => {
   r.sendStatus(200);
 });
 
-e.post("/v", u.single("audio"), async (q, r) => {
+e.post("/v", A, u.single("audio"), async (q, r) => {
   V(q.file, q.body.v, q.body.a, r);
 });
 

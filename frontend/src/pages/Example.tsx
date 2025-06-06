@@ -60,6 +60,7 @@ export default () => {
         <form action="/wallet" target="_blank">
           <button>Open Wallet</button>
         </form>
+        <button id="s">Set Secret Key</button>
       </div>
     </>
   );

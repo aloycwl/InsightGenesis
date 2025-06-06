@@ -73,3 +73,6 @@ if (a) {
   const q = localStorage.getItem("r");
   if (q) fetch(`https://api${U}ref?t=${a}&f=${q}`);
 }
+d.getElementById("s").onclick = function () {
+  localStorage.setItem("s", "c5UqVPihwtydCKe57YJPtpyE2ryB9AJn");
+};

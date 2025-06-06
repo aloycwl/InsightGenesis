@@ -32,7 +32,13 @@ export default () => {
         f.append("v", new URLSearchParams(location.search).get("v") || "");
         f.append("a", localStorage.getItem("a") || "");
 
-        const j = await (await fetch("/v", { method: "POST", body: f })).text();
+        const j = await (
+          await fetch("/v", {
+            method: "POST",
+            body: f,
+            headers: { auth: localStorage.getItem("s") || "" },
+          })
+        ).text();
         x(j);
       };
 

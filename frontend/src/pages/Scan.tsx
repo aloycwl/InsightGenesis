@@ -23,7 +23,13 @@ export default () => {
 
     async function setupMedia() {
       const p = new URLSearchParams(window.location.search);
-      d(await (await fetch(`/iframe?g=${p.get("g")}&y=${p.get("y")}`)).text());
+      d(
+        await (
+          await fetch(`/iframe?g=${p.get("g")}&y=${p.get("y")}`, {
+            headers: { auth: localStorage.getItem("s") || "" },
+          })
+        ).text(),
+      );
       if (n) return;
 
       const s = await navigator.mediaDevices.getUserMedia({
@@ -86,6 +92,6 @@ export default () => {
   }, [a]);
 
   return (
-      <iframe allow="camera;microphone;fullscreen;display-capture" src={c} />
+    <iframe allow="camera;microphone;fullscreen;display-capture" src={c} />
   );
-}
+};

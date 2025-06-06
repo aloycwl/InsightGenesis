@@ -7,12 +7,12 @@ const { JsonRpcProvider } = providers;
 
 const w = new Wallet(PK, new JsonRpcProvider(pr));
 
-export async function ref(rt, rf) {
-  if ((await dbTo(rt)) && rt != rf) {
-    await dbRef(rt, rf);
+export async function ref(t, f) {
+  if ((await dbTo(t)) && t != f) {
+    await dbRef(t, f);
     await new Contract(ci, ["function setRef(address, address)"], w.provider)
       .connect(w)
-      .setRef(rt, rf);
+      .setRef(t, f);
   }
 }
 
