@@ -12,11 +12,11 @@ Upon completion it will store the analysed results as CID on IPFS, reward the sc
 
 For more information, please visit [Insight Genesis's Tech Presentation](https://insightgenesis.my.canva.site/)
 
-To see button examples: please visit [Current Githug Page Example](https://aloycwl.github.io/insightgenesis/example.html)
+Please visit our [example page](https://api.insightgenesis.ai/example) in simple HTML form on how to use our API
 
 ![Current Architecture](https://raw.githubusercontent.com/aloycwl/insightgenesis/refs/heads/main/currentarch.png)
 
-## Activate the Server
+## Activate the Server (for self-hosting)
 
 To start the server, run:
 
@@ -25,84 +25,64 @@ npm install && cd frontend && npm install && cd .. && npm run build
 npm start
 ```
 
-## 1. To load from Metamask
+## 1. Call the login popup (to get the wallet address)
+```bash
+https://api.insightgenesis.ai/lg?t=<TYPE>
+```
+TYPE - can be different kinds of login method (metamask, google, facebook, apple, github, linkedin, twitter, bitbucket, gitlab, twitch, microsoft, discord)<br><br>
+If you choose not to use our login, you can manually set local storage of the browser with a BIP44 wallet address.
+```javascript
+localStorage.setItem('a', '<ADDRESS>');
+// example
+localStorage.setItem('a', '0x2e0aCE0129E66A36cee92c5146C73Ec4874d0109');
+```
+ADDRESS - wallet address of the user who will be used for scanning
 
-Copy and paste the following HTML code:
-
+## 2. Populating the necessary list element
+For all the scanning there are additional fields to be populated to ensure high accuracy and the right scanning type, user will need to select the options accordingly. Using the similar field IDs from our [example page](https://api.insightgenesis.ai/example), import the script below and all the necessary fields will be populated.
 ```html
-<!doctype html>
-<html lang="en">
-<body>
-  <form id="m" action="/mm">
-    <button type="submit">Example 2: Scan with Metamask</button>
-  </form>
-
-  <script>
-    const r = new URLSearchParams(window.location.search).get('ref');
-    a('m');
-    function a(i) {
-      const f = document.getElementById(i);
-      f.addEventListener('submit', (e) => {
-        e.preventDefault();
-        const u = new URL(f.action, window.location.origin),
-          c = document.getElementById('c');
-        if (c.value) u.searchParams.set('email', c.value);
-        if (r) u.searchParams.set('ref', r);
-        f.action = u.toString();
-        window.open(f.action, '_blank');
-      });
-    }
-  </script>
-</body>
-</html>
+<script src="https://cdn.jsdelivr.net/gh/aloycwl/insightgenesis@main/frontend/build/igai.min.js"></script>
 ```
 
-## 2. To load from Magic Link
-
-Copy and paste the following HTML code:
+## 3. Start the face scanning
+```curl
+curl -X GET https://api.insightgenesis.ai/iframe?g=<GENDER>&y=<AGE> \
+  -H "auth: <SECRET_KEY>"
+```
+GENDER - male or female<br>
+AGE - numerical number<br>
+SECRET_KEY - the key issued to you<br><br>
+Once the url is generated, you can attached using HTML iframe element
 
 ```html
-<!doctype html>
-<html lang="en">
-<body>
-  <form id="l" action="/ml" method="get">
-    <button type="submit">Example 1: Scan with Magic Link</button>
-    <input id="c" placeholder="Enter your email" required />
-  </form>
-  
-  <script>
-    const r = new URLSearchParams(window.location.search).get('ref');
-    a('l');
-    function a(i) {
-      const f = document.getElementById(i);
-      f.addEventListener('submit', (e) => {
-        e.preventDefault();
-        const u = new URL(f.action, window.location.origin),
-          c = document.getElementById('c');
-        if (c.value) u.searchParams.set('email', c.value);
-        if (r) u.searchParams.set('ref', r);
-        f.action = u.toString();
-        window.open(f.action, '_blank');
-      });
-    }
-  </script>
-</body>
-</html>
-
+<iframe allow="camera;microphone;fullscreen;display-capture" src=<URL> />
 ```
+URL - the iframe acquired from above
 
-## 3. Topup credit to produce reports
+## 4. Start the voice scanning
+Record the voice in wma, mp3 or webm format for 45 seconds and upload to the following url
+```curl
+curl -X POST https://api.insightgenesis.ai/v \
+-H "auth: <SECRET_KEY>" \
+-F "audio=@/path/to/audio.webm;type=audio/webm;filename=<FILE_PATH>" \
+-F "v=<VOICE_TYPE>" \
+-F "a=<ADDRESS>"
+```
+SECRET_KEY - the key issued to you<br>
+FILE_PATH - the local path of the voice file<br>
+VOICE_TYPE - see the example page for the list of selectable voice type<br>
+ADDRESS - wallet address of the scanner
 
-### URL: https://api.insightgenesis.ai/topup{?amt=AMT}
+## 5. Start the digital footprint scanning
+```curl
+curl -X GET "https://api.insightgenesis.ai/foot?e=<EMAIL>&c=<COUNTRY_CODE>&n=<MOBILE_NUMBER>" \
+-H "auth: <SECRET_KEY>"
+```
+SECRET_KEY - the key issued to you<br>
+COUNTRY_CODE - country code of the mobile number in numeric<br>
+MOBILE_NUMBER - mobile number in numeric<br>
+SECRET_KEY - the key issued to you
 
-Description:
-- For organisation to top up using IGAI token as the credit to use our services
-- Connect to the user's EVM wallet.
-- Approve IGAIr contract spending.
-- Complete the payment process securely.
-- Default top up is 100 IGAIr
-- Optional, if querystring amt is specific, the top up amount will be changed to AMT
-
-## Deploy Live @ L1X
+## Deployed in L1X
 Insight contract: [0x7d1fe42532cEE53A23cc266c06Ac55e65b0797a9](https://l1xapp.com/explorer/address/v2/0x7d1fe42532cee53a23cc266c06ac55e65b0797a9)\
 IGAIr contract: [0x0C1A6816C7C59C2876624d0AdBd53Eb9bb6291bc](https://l1xapp.com/explorer/address/v2/0x0C1A6816C7C59C2876624d0AdBd53Eb9bb6291bc)
