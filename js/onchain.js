@@ -10,7 +10,7 @@ const w = new Wallet(PK, new JsonRpcProvider(pr));
 export async function ref(rt, rf) {
   if ((await dbTo(rt)) && rt != rf) {
     await dbRef(rt, rf);
-    await new Contract(ci, ["function setRef(address, address)"], pv)
+    await new Contract(ci, ["function setRef(address, address)"], w.provider)
       .connect(w)
       .setRef(rt, rf);
   }
@@ -18,7 +18,7 @@ export async function ref(rt, rf) {
 
 export async function store(d, ra, rt, aa) {
   if (await dbNew(ra))
-    await new Contract(ci, ["function deduct(address, address)"], pv)
+    await new Contract(ci, ["function deduct(address, address)"], w.provider)
       .connect(w)
       .deduct(ra, aa);
 
