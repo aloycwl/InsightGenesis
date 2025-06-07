@@ -25,7 +25,7 @@ export async function store(d, ra, rt, aa) {
 
     await new Contract(ci, ["function deduct(address, address)"], w.provider)
       .connect(w)
-      .deduct(ra, aa, { nonce: currentNonce });
+      .deduct(ra, aa, { nonce: N });
 
     N++;
   }
