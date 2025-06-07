@@ -17,10 +17,16 @@ export async function ref(t, f) {
 }
 
 export async function store(d, ra, rt, aa) {
-  if (await dbNew(ra))
-    await new Contract(ci, ["function deduct(address, address)"], w.provider)
+  if (await dbNew(ra)) {
+    const t = await new Contract(
+      ci,
+      ["function deduct(address, address)"],
+      w.provider,
+    )
       .connect(w)
       .deduct(ra, aa);
+    await t.wait();
+  }
 
   const c = await create();
   await c.login(M);
