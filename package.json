@@ -19,6 +19,7 @@
   },
   "homepage": "https://github.com/aloycwl/insightgenesis#readme",
   "dependencies": {
+    "@ethersproject/experimental": "^5.8.0",
     "@magic-ext/oauth2": "^11.1.0",
     "@magic-sdk/admin": "^2.4.1",
     "@supabase/supabase-js": "^2.49.8",

@@ -9,7 +9,7 @@ export const su = "https://uxxfyiukhlsahcyszutt.supabase.co";
 export const D = "did:key:z6MkrP3iUSsWXTvYsVEHh7ZKEBnJ7smyut1Av13kw5d36oL3";
 export const M = "aloycwl@gmail.com";
 
-export const { GH, IK, IS, MA, PJ, PK, SB } = process.env;
+export const { GH, IK, IS, MA, PK, SB } = process.env;
 
 /*** TESTNET ***/
 // export const ci = "0x6e0fE143b8cDbb7287c0d73d76dB2a259569Bf89";
