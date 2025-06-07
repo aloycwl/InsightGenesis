@@ -47,6 +47,8 @@ export async function processQueue() {
       ra,
       rt,
     );
+
+    console.log("Queued left", q.length);
   }
 
   p = false;
