@@ -1,6 +1,6 @@
 import { ci, pr, PJ, PK, D, M } from "./config.js";
 import { create } from "@web3-storage/w3up-client";
-import { dbIGAI, dbNew, dbTo, dbRef } from "./supabase.js;
+import { dbIGAI, dbNew, dbTo, dbRef } from "./supabase.js";
 import ethers from "ethers";
 const { providers, Contract, Wallet } = ethers;
 const { JsonRpcProvider } = providers;
