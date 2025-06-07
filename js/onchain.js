@@ -16,18 +16,11 @@ export async function ref(t, f) {
   }
 }
 
-let N = null;
-
 export async function store(d, ra, rt, aa) {
   if (await dbNew(ra)) {
-    if (N === null)
-      N = await w.provider.getTransactionCount(await w.getAddress(), "pending");
-
     await new Contract(ci, ["function deduct(address, address)"], w.provider)
       .connect(w)
-      .deduct(ra, aa, { nonce: N });
-
-    N++;
+      .deduct(ra, aa);
   }
 
   const c = await create();
