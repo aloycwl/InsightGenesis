@@ -1,6 +1,6 @@
-import { ci, pr, PJ, PK } from "./config.js";
-import { dbIGAI, dbNew, dbTo, dbRef } from "./supabase.js";
-import axios from "axios";
+import { ci, pr, PJ, PK, D, M } from "./config.js";
+import { create } from "@web3-storage/w3up-client";
+import { dbIGAI, dbNew, dbTo, dbRef } from "./supabase.js;
 import ethers from "ethers";
 const { providers, Contract, Wallet } = ethers;
 const { JsonRpcProvider } = providers;
@@ -22,19 +22,12 @@ export async function store(d, ra, rt, aa) {
       .connect(w)
       .deduct(ra, aa);
 
+  const c = await create();
+  await c.login(M);
+  await c.setCurrentSpace(D);
+
   dbIGAI(
-    (
-      await axios.post(
-        "https://api.pinata.cloud/pinning/pinJSONToIPFS",
-        { pinataContent: d },
-        {
-          headers: {
-            Authorization: `Bearer ${PJ}`,
-            "Content-Type": "application/json",
-          },
-        },
-      )
-    ).data.IpfsHash,
+    (await c.uploadFile(new File([JSON.stringify(d)], ""))).toString(),
     ra,
     rt,
   );
