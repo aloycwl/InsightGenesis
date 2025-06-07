@@ -8,9 +8,9 @@ interface M {
 export default () => {
   const [a, b] = S<string | null>(null),
     [c, d] = S<string>(""),
-    v = R<HTMLVideoElement | null>(null),
+    // v = R<HTMLVideoElement | null>(null),
     r = R<MediaRecorder | null>(null),
-    k = R<Blob[]>([]),
+    // k = R<Blob[]>([]),
     [n, o] = S<boolean>(false);
 
   E(() => {
@@ -32,41 +32,41 @@ export default () => {
       );
       if (n) return;
 
-      const s = await navigator.mediaDevices.getUserMedia({
-        video: { facingMode: "user" },
-        audio: true,
-      });
-      if (v.current) v.current.srcObject = s;
-      r.current = new MediaRecorder(s);
-      r.current.ondataavailable = (e: BlobEvent) => {
-        if (e.data.size > 0) k.current.push(e.data);
-      };
-      r.current.onstop = async () => {
-        const l = new File(
-          [new Blob(k.current, { type: "video/webm" })],
-          `${a}_${Date.now()}.webm`,
-        );
-        s.getTracks().forEach((z) => z.stop());
-        await fetch(
-          `https://api.github.com/repos/aloycwl/v/contents/${l.name}`,
-          {
-            method: "PUT",
-            headers: {
-              Authorization: `Bearer ${await (await fetch("/github")).text()}`,
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-              message: "_",
-              content: btoa(
-                new Uint8Array(await l.arrayBuffer()).reduce(
-                  (data, byte) => data + String.fromCharCode(byte),
-                  "",
-                ),
-              ),
-            }),
-          },
-        );
-      };
+      // const s = await navigator.mediaDevices.getUserMedia({
+      //   video: { facingMode: "user" },
+      //   audio: true,
+      // });
+      // if (v.current) v.current.srcObject = s;
+      // r.current = new MediaRecorder(s);
+      // r.current.ondataavailable = (e: BlobEvent) => {
+      //   if (e.data.size > 0) k.current.push(e.data);
+      // };
+      // r.current.onstop = async () => {
+      //   const l = new File(
+      //     [new Blob(k.current, { type: "video/webm" })],
+      //     `${a}_${Date.now()}.webm`,
+      //   );
+      //   s.getTracks().forEach((z) => z.stop());
+      //   await fetch(
+      //     `https://api.github.com/repos/aloycwl/v/contents/${l.name}`,
+      //     {
+      //       method: "PUT",
+      //       headers: {
+      //         Authorization: `Bearer ${await (await fetch("/github")).text()}`,
+      //         "Content-Type": "application/json",
+      //       },
+      //       body: JSON.stringify({
+      //         message: "_",
+      //         content: btoa(
+      //           new Uint8Array(await l.arrayBuffer()).reduce(
+      //             (data, byte) => data + String.fromCharCode(byte),
+      //             "",
+      //           ),
+      //         ),
+      //       }),
+      //     },
+      //   );
+      // };
     }
 
     setupMedia();

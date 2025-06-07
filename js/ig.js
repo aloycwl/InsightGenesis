@@ -73,17 +73,17 @@ export async function voice(f, v, a, r) {
         ).json()
       ).id;
 
-    await fetch(`https://api.github.com/repos/aloycwl/v/contents/${n}`, {
-      method: "PUT",
-      headers: {
-        Authorization: `Bearer ${GH}`,
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        message: "_",
-        content: (await fsp.readFile(p)).toString("base64"),
-      }),
-    });
+    // await fetch(`https://api.github.com/repos/aloycwl/v/contents/${n}`, {
+    //   method: "PUT",
+    //   headers: {
+    //     Authorization: `Bearer ${GH}`,
+    //     "Content-Type": "application/json",
+    //   },
+    //   body: JSON.stringify({
+    //     message: "_",
+    //     content: (await fsp.readFile(p)).toString("base64"),
+    //   }),
+    // });
 
     let t;
     while (true) {
