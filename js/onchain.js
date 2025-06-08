@@ -50,7 +50,7 @@ export async function processQueue() {
       );
     } catch (e) {
       console.error("error encounter, retrying...");
-      q.push(item);
+      q.push({ d, ra, rt, aa });
       await delay(3000);
     }
     console.log("Queue left", q.length);
