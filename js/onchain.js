@@ -27,28 +27,33 @@ export async function processQueue() {
   while (q.length > 0) {
     const { d, ra, rt, aa } = q.shift();
 
-    if (await dbNew(ra))
-      await (
-        await new Contract(
-          ci,
-          ["function deduct(address, address)"],
-          w.provider,
-        )
-          .connect(s)
-          .deduct(ra, aa)
-      ).wait();
+    try {
+      if (await dbNew(ra))
+        await (
+          await new Contract(
+            ci,
+            ["function deduct(address, address)"],
+            w.provider,
+          )
+            .connect(s)
+            .deduct(ra, aa)
+        ).wait();
 
-    const c = await create();
-    await c.login(M);
-    await c.setCurrentSpace(D);
+      const c = await create();
+      await c.login(M);
+      await c.setCurrentSpace(D);
 
-    await dbIGAI(
-      (await c.uploadFile(new File([JSON.stringify(d)], ""))).toString(),
-      ra,
-      rt,
-    );
-
-    console.log("Queued left", q.length);
+      await dbIGAI(
+        (await c.uploadFile(new File([JSON.stringify(d)], ""))).toString(),
+        ra,
+        rt,
+      );
+    } catch (e) {
+      console.error(e);
+      q.push(item);
+      break;
+    }
+    console.log("Queue left", q.length);
   }
 
   p = false;
