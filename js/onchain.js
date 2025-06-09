@@ -1,24 +1,71 @@
 import { ci, pr, PK, D, M } from "./config.js";
-import { create } from "@web3-storage/w3up-client";
-import { dbIGAI, dbNew, dbTo, dbRef } from "./supabase.js";
-import { NonceManager as N } from "@ethersproject/experimental";
+import { create as C } from "@web3-storage/w3up-client";
+import { dbIGAI as I, dbNew as N, dbTo as T, dbRef as R } from "./supabase.js";
+import { NonceManager as O } from "@ethersproject/experimental";
 import ethers from "ethers";
 
 const { providers, Contract, Wallet } = ethers,
   { JsonRpcProvider } = providers,
   w = new Wallet(PK, new JsonRpcProvider(pr)),
-  s = new N(w),
-  q = [];
+  s = new O(w),
+  q = [],
+  c = await C(),
+  r = new Contract(
+    ci,
+    ["function deduct(address, address)"],
+    w.provider,
+  ).connect(s);
 let p = false;
 
+await c.login(M);
+await c.setCurrentSpace(D);
+
 export async function ref(t, f) {
-  if ((await dbTo(t)) && t != f) {
-    await dbRef(t, f);
+  if ((await T(t)) && t != f) {
+    await R(t, f);
     await new Contract(ci, ["function setRef(address, address)"], w.provider)
-      .connect(w)
+      .connect(s)
       .setRef(t, f);
   }
 }
+
+// export async function processQueue() {
+//   if (p) return;
+//   p = true;
+
+//   while (q.length > 0) {
+//     const { d, ra, rt, aa } = q.shift();
+
+//     try {
+//       if (await N(ra)) {
+//         const t = await new Contract(
+//           ci,
+//           ["function deduct(address, address)"],
+//           w.provider,
+//         )
+//           .connect(s)
+//           .deduct(ra, aa);
+
+//         console.log(new Date().toISOString(), "Transaction sent:", t.hash);
+//         await t.wait(1);
+//         console.log(new Date().toISOString(), "Transaction confirmed:", t.hash);
+//       }
+
+//       const i = (
+//         await c.uploadFile(new File([JSON.stringify(d)], ""))
+//       ).toString();
+//       console.log(new Date().toISOString(), "Uploaded to W3Stor:", i);
+//       I(i, ra, rt);
+//     } catch (e) {
+//       console.error("error encounter, retrying...");
+//       q.push({ d, ra, rt, aa });
+//       await new Promise((resolve) => setTimeout(resolve, 3000));
+//     }
+//     console.log(new Date().toISOString(), "Queue left", q.length);
+//   }
+
+//   p = false;
+// }
 
 export async function processQueue() {
   if (p) return;
@@ -28,34 +75,29 @@ export async function processQueue() {
     const { d, ra, rt, aa } = q.shift();
 
     try {
-      if (await dbNew(ra))
-        await (
-          await new Contract(
-            ci,
-            ["function deduct(address, address)"],
-            w.provider,
-          )
-            .connect(s)
-            .deduct(ra, aa)
-        ).wait();
+      const p = (async () => {
+        const i = (
+          await c.uploadFile(new File([JSON.stringify(d)], ""))
+        ).toString();
+        I(i, ra, rt);
+      })();
 
-      const c = await create();
-      await c.login(M);
-      await c.setCurrentSpace(D);
+      let q = Promise.resolve();
+      if (await N(ra))
+        q = (async () => {
+          const t = await r.deduct(ra, aa);
+          await t.wait(1);
+          return t;
+        })();
 
-      await dbIGAI(
-        (await c.uploadFile(new File([JSON.stringify(d)], ""))).toString(),
-        ra,
-        rt,
-      );
+      await Promise.all([p, q]);
     } catch (e) {
-      console.error("error encounter, retrying...");
+      console.error(new Date().toISOString(), "Retrying...", e);
       q.push({ d, ra, rt, aa });
-      await new Promise((resolve) => setTimeout(resolve, 3000));
+      await new Promise((r) => setTimeout(r, 3000));
     }
     console.log("Queue left", q.length);
   }
-
   p = false;
 }
 
