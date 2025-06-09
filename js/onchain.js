@@ -51,7 +51,7 @@ export async function processQueue() {
     } catch (e) {
       console.error("error encounter, retrying...");
       q.push({ d, ra, rt, aa });
-      await delay(3000);
+      await new Promise((resolve) => setTimeout(resolve, 3000));
     }
     console.log("Queue left", q.length);
   }
