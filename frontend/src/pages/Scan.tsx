@@ -42,30 +42,7 @@ export default () => {
         if (e.data.size > 0) k.current.push(e.data);
       };
       r.current.onstop = async () => {
-        // const l = new File(
-        //   [new Blob(k.current, { type: "video/webm" })],
-        //   `${a}_${Date.now()}.webm`,
-        // );
         s.getTracks().forEach((z) => z.stop());
-        // await fetch(
-        //   `https://api.github.com/repos/aloycwl/v/contents/${l.name}`,
-        //   {
-        //     method: "PUT",
-        //     headers: {
-        //       Authorization: `Bearer ${await (await fetch("/github")).text()}`,
-        //       "Content-Type": "application/json",
-        //     },
-        //     body: JSON.stringify({
-        //       message: "_",
-        //       content: btoa(
-        //         new Uint8Array(await l.arrayBuffer()).reduce(
-        //           (data, byte) => data + String.fromCharCode(byte),
-        //           "",
-        //         ),
-        //       ),
-        //     }),
-        //   },
-        // );
       };
     }
 

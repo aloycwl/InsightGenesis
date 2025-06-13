@@ -19,6 +19,10 @@ export async function dbIGAI(a, b, c) {
   await s.from("igai").insert([{ cid: a, addr: b, type: c }]);
 }
 
+export async function dbRef(a, b) {
+  await s.from("ref").insert([{ to: a, from: b }]);
+}
+
 export async function dbNew(a, t) {
   const q = s.from("igai").select("cid").eq("addr", a);
   return !(await (t > 2 ? q.gt("type", 2) : q.eq("type", t)).limit(1).single()
@@ -31,8 +35,4 @@ export async function dbTo(a) {
 
 export async function dbV(a) {
   return (await s.from("vtype").select("type").eq("id", a).single()).data.type;
-}
-
-export async function dbRef(a, b) {
-  await s.from("ref").insert([{ to: a, from: b }]);
 }

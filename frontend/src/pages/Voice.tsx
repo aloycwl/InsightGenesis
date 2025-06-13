@@ -1,9 +1,9 @@
 import { useEffect as E, useState as S } from "react";
 
 export default () => {
-  const [s, r] = S(45);
-  const [w, x] = S("");
-  const [y, z] = S(false);
+  const [s, r] = S(45),
+    [w, x] = S(""),
+    [y, z] = S(false);
 
   E(() => {
     const t = setInterval(() => {

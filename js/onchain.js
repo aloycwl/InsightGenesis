@@ -29,44 +29,6 @@ export async function ref(t, f) {
   }
 }
 
-// export async function processQueue() {
-//   if (p) return;
-//   p = true;
-
-//   while (q.length > 0) {
-//     const { d, ra, rt, aa } = q.shift();
-
-//     try {
-//       if (await N(ra)) {
-//         const t = await new Contract(
-//           ci,
-//           ["function deduct(address, address)"],
-//           w.provider,
-//         )
-//           .connect(s)
-//           .deduct(ra, aa);
-
-//         console.log(new Date().toISOString(), "Transaction sent:", t.hash);
-//         await t.wait(1);
-//         console.log(new Date().toISOString(), "Transaction confirmed:", t.hash);
-//       }
-
-//       const i = (
-//         await c.uploadFile(new File([JSON.stringify(d)], ""))
-//       ).toString();
-//       console.log(new Date().toISOString(), "Uploaded to W3Stor:", i);
-//       I(i, ra, rt);
-//     } catch (e) {
-//       console.error("error encounter, retrying...");
-//       q.push({ d, ra, rt, aa });
-//       await new Promise((resolve) => setTimeout(resolve, 3000));
-//     }
-//     console.log(new Date().toISOString(), "Queue left", q.length);
-//   }
-
-//   p = false;
-// }
-
 export async function processQueue() {
   if (p) return;
   p = true;

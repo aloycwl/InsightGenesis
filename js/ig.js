@@ -2,12 +2,11 @@ import axios from "axios";
 import fetch from "node-fetch";
 import ffmpegPath from "ffmpeg-static";
 import fs from "fs";
-import fsp from "fs/promises";
 import FormData from "form-data";
 import { dbV as D } from "./supabase.js";
 import { execa as X } from "execa";
 import { store as O } from "./onchain.js";
-import { aa, GH, IK, IS } from "./config.js";
+import { aa, IK, IS } from "./config.js";
 const I = "https://api.insightgenie.ai/";
 
 async function auth() {
@@ -55,13 +54,14 @@ export async function voice(f, v, a, r) {
     p = `tmp/${n}`,
     d = new FormData();
 
-  await X(ffmpegPath, ["-i", f.path, "-c:a", "aac", p]);
-  d.append("audio", fs.createReadStream(p));
-  d.append("isSendingWebHookToInstitution", "false");
-  d.append("audioServiceType", await D(v));
-  d.append("channelType", "0");
-
   try {
+    await X(ffmpegPath, ["-i", f.path, "-c:a", "aac", p]);
+    d.append("audio", fs.createReadStream(p));
+    d.append("isSendingWebHookToInstitution", "false");
+    d.append("audioServiceType", await D(v));
+    d.append("channelType", "0");
+    fs.unlink(f.path, () => {});
+
     const h = await auth(),
       s = (
         await (
@@ -73,23 +73,13 @@ export async function voice(f, v, a, r) {
         ).json()
       ).id;
 
-    // await fetch(`https://api.github.com/repos/aloycwl/v/contents/${n}`, {
-    //   method: "PUT",
-    //   headers: {
-    //     Authorization: `Bearer ${GH}`,
-    //     "Content-Type": "application/json",
-    //   },
-    //   body: JSON.stringify({
-    //     message: "_",
-    //     content: (await fsp.readFile(p)).toString("base64"),
-    //   }),
-    // });
-
     let t;
+
     while (true) {
       const j = await (
         await fetch(`${I}get-score?id=${s}`, { headers: h })
       ).json();
+      console.log(j);
       if (j.scoreId) {
         t = j;
         break;
@@ -98,11 +88,10 @@ export async function voice(f, v, a, r) {
     }
 
     O(t, a, v, aa);
-    fs.unlink(f.path, () => {});
     fs.unlink(p, () => {});
 
     return r.json(t);
   } catch (e) {
-    console.log(e);
+    return e;
   }
 }

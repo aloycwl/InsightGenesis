@@ -14,7 +14,7 @@ For more information, please visit [Insight Genesis's Tech Presentation](https:/
 
 Please visit our [example page](https://api.insightgenesis.ai/example) in simple HTML form on how to use our API
 
-![Current Architecture](https://raw.githubusercontent.com/aloycwl/insightgenesis/refs/heads/main/currentarch.png)
+![Current Architecture](https://cdn.jsdelivr.net/gh/aloycwl/insightgenesis@main/currentarch.png)
 
 ## Activate the Server (for self-hosting)
 

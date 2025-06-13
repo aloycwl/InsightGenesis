@@ -2,7 +2,7 @@ import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 
 export default defineConfig({
-  base: "https://cdn.jsdelivr.net/gh/aloycwl/insightgenesis@main/frontend/build/",
+  // base: "https://cdn.jsdelivr.net/gh/aloycwl/insightgenesis@main/frontend/build/",
   plugins: [react()],
   build: {
     outDir: "build",
