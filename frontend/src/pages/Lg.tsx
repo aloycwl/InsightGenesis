@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect as E } from "react";
 import { Magic as M } from "magic-sdk";
 import { OAuthExtension as O } from "@magic-ext/oauth2";
 import { r } from "./util";
@@ -24,7 +24,10 @@ declare global {
 }
 
 export default () => {
-  useEffect(() => {
+  E(() => {
+    if (!localStorage.getItem("r")) {
+      localStorage.setItem("r", window.location.origin);
+    }
     (async () => {
       const q = new URLSearchParams(window.location.search),
         t = q.get("t"),
@@ -81,4 +84,4 @@ export default () => {
   }, []);
 
   return <>Loading...</>;
-}
+};

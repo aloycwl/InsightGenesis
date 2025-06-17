@@ -1,13 +1,11 @@
 const s = new URLSearchParams(location.search),
   r = s.get("ref"),
   a = s.get("a"),
-  l = location.href,
-  b = new URL(l),
+  b = new URL(location.href),
   d = document;
 function E(e) {
   return d.getElementById(e);
 }
-localStorage.setItem("u", l);
 if (r) localStorage.setItem("r", r);
 ["a", "d"].forEach((i) => {
   E(i).style.display = a ? "inline-block" : "none";
