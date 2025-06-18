@@ -10,8 +10,3 @@ export const D = "did:key:z6MkrP3iUSsWXTvYsVEHh7ZKEBnJ7smyut1Av13kw5d36oL3";
 export const M = "aloycwl@gmail.com";
 
 export const { GH, IK, IS, MA, PK, SB } = process.env;
-
-/*** TESTNET ***/
-// export const ci = "0x6e0fE143b8cDbb7287c0d73d76dB2a259569Bf89";
-// export const cr = "0x9bE861104E64Af9FBFe53d13FCF8Bda63C47E3ca";
-// export const pr = "https://data-seed-prebsc-1-s1.bnbchain.org:8545/";

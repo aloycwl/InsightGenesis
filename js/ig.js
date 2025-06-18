@@ -10,12 +10,16 @@ import { aa, IK, IS } from "./config.js";
 const I = "https://api.insightgenie.ai/";
 
 async function auth() {
-  return {
-    Authorization: `Bearer ${
-      (await axios.post(`${I}auth/authenticate`, { key: IK, secret: IS })).data
-        .token
-    }`,
-  };
+  try {
+    return {
+      Authorization: `Bearer ${
+        (await axios.post(`${I}auth/authenticate`, { key: IK, secret: IS }))
+          .data.token
+      }`,
+    };
+  } catch (e) {
+    return e;
+  }
 }
 
 export async function print(e, c, n) {
@@ -33,28 +37,32 @@ export async function print(e, c, n) {
 }
 
 export async function iframe(g, y) {
-  return (
-    await axios.post(
-      `${I}face-scan/generate-video-token`,
-      {
-        clientId: "igai",
-        age: parseInt(y),
-        gender: g,
-        showResults: "display",
-        isVoiceAnalysisOn: false,
-        forceFrontCamera: true,
-      },
-      { headers: await auth() },
-    )
-  ).data.videoIframeUrl;
+  try {
+    return (
+      await axios.post(
+        `${I}face-scan/generate-video-token`,
+        {
+          clientId: "igai",
+          age: parseInt(y),
+          gender: g,
+          showResults: "display",
+          isVoiceAnalysisOn: false,
+          forceFrontCamera: true,
+        },
+        { headers: await auth() },
+      )
+    ).data.videoIframeUrl;
+  } catch (e) {
+    return e;
+  }
 }
 
 export async function voice(f, v, a, r) {
-  const n = `${a}_${Date.now()}_v.aac`,
-    p = `tmp/${n}`,
-    d = new FormData();
-
   try {
+    const n = `${a}_${Date.now()}_v.aac`,
+      p = `tmp/${n}`,
+      d = new FormData();
+
     await X(ffmpegPath, ["-i", f.path, "-c:a", "aac", p]);
     d.append("audio", fs.createReadStream(p));
     d.append("isSendingWebHookToInstitution", "false");

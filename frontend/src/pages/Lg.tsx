@@ -25,13 +25,14 @@ declare global {
 
 export default () => {
   E(() => {
-    if (!localStorage.getItem("r")) {
-      localStorage.setItem("r", window.location.origin);
-    }
     (async () => {
       const q = new URLSearchParams(window.location.search),
         t = q.get("t"),
-        email = q.get("email");
+        email = q.get("email"),
+        u = q.get("u");
+
+      if (!localStorage.getItem("r"))
+        localStorage.setItem("r", u ? u : window.location.origin);
 
       if (t === "metamask" && window.ethereum) {
         const accounts = await window.ethereum.request({

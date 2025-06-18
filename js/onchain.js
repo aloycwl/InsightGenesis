@@ -21,11 +21,15 @@ await c.login(M);
 await c.setCurrentSpace(D);
 
 export async function ref(t, f) {
-  if ((await T(t)) && t != f) {
-    await R(t, f);
-    await new Contract(ci, ["function setRef(address, address)"], w.provider)
-      .connect(s)
-      .setRef(t, f);
+  try {
+    if ((await T(t)) && t != f) {
+      await R(t, f);
+      await new Contract(ci, ["function setRef(address, address)"], w.provider)
+        .connect(s)
+        .setRef(t, f);
+    }
+  } catch (e) {
+    console.log(e);
   }
 }
 
