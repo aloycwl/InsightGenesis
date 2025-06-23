@@ -17,8 +17,12 @@ const { providers, Contract, Wallet } = ethers,
   ).connect(s);
 let p = false;
 
-await c.login(M);
-await c.setCurrentSpace(D);
+const w = async () => {
+  if (!c.currentSpace()) {
+    await c.login(M);
+    await c.setCurrentSpace(D);
+  }
+};
 
 export async function ref(t, f) {
   try {
@@ -42,6 +46,7 @@ export async function processQueue() {
 
     try {
       const p = (async () => {
+        await ensureLoggedIn();
         const i = (
           await c.uploadFile(new File([JSON.stringify(d)], ""))
         ).toString();
