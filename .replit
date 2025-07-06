@@ -1,9 +1,9 @@
-modules = ["nodejs-20", "web"]
+modules = ["nodejs-20", "python-3.11", "web"]
 run = "npm run start"
 
 [nix]
 channel = "stable-24_05"
-packages = ["vim", "typescript", "lsof"]
+packages = ["vim", "typescript", "lsof", "nano"]
 
 [deployment]
 run = ["sh", "-c", "npm run start"]
