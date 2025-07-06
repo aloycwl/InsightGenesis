@@ -6,7 +6,7 @@ import { aa, MA, GH } from "./config.js";
 import { dbAuth as A } from "./supabase.js";
 import { fileURLToPath as P } from "url";
 import { iframe as F, print as G, voice as V } from "./ig.js";
-import { ref as R, store as S } from "./onchain.js";
+import { ref as R, store as S, getInfo as I } from "./onchain.js";
 import { Magic as M } from "@magic-sdk/admin";
 
 const e = express(),
@@ -38,6 +38,10 @@ e.get("/ref", async (q, r) => {
 
 e.get("/les", async (q, r) => {
   r.send((await new M(MA).users.getMetadataByToken(q.headers.m)).publicAddress);
+});
+
+e.get("/info", async (q, r) => {
+  r.send(await I(q.query.addr));
 });
 
 e.post("/store", async (q, r) => {

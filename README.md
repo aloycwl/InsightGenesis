@@ -83,6 +83,32 @@ COUNTRY_CODE - country code of the mobile number in numeric<br>
 MOBILE_NUMBER - mobile number in numeric<br>
 SECRET_KEY - the key issued to you
 
+## 6. Fetch IGAIr balance and Referrals
+```curl
+curl -X GET "https://api.insightgenesis.ai/info?addr=<ADDRESS>"
+
+e.g. curl -X GET "https://api.insightgenesis.ai/info?addr=0x2e0aCE0129E66A36cee92c5146C73Ec4874d0109"
+```
+ADDRESS - address to be queried<br>
+
+Example
+```json
+{
+  "balance": "245000000000000000000",
+  "to": "0xeC3404b06152939FB56999A87693046CC09B3bCc",
+  "from": [
+    "0x67018dd2C02dacBB74dfE57a0Df8793902891F4c",
+    "0xfabCB001D46DfCce9Fe4394CaE50Ffa00B5F6679",
+    "0xa34357486224151ddfdb291e13194995c22df505",
+  ]
+}
+```
+Returned
+- balance: the IGAI in 18 decimal place
+- to: the address who referred ADDRESS
+- from: the addresses brought in by ADDRESS
+
+
 ## Deployed in L1X
 Insight contract: [0x7d1fe42532cEE53A23cc266c06Ac55e65b0797a9](https://l1xapp.com/explorer/address/v2/0x7d1fe42532cee53a23cc266c06ac55e65b0797a9)\
 IGAIr contract: [0x0C1A6816C7C59C2876624d0AdBd53Eb9bb6291bc](https://l1xapp.com/explorer/address/v2/0x0C1A6816C7C59C2876624d0AdBd53Eb9bb6291bc)

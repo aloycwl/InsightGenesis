@@ -3,7 +3,7 @@ run = "npm run start"
 
 [nix]
 channel = "stable-24_05"
-packages = ["vim", "typescript", "lsof", "nano"]
+packages = ["lsof", "nano", "typescript", "vim"]
 
 [deployment]
 run = ["sh", "-c", "npm run start"]

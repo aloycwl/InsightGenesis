@@ -62,3 +62,19 @@ export async function dbV(a) {
     return e;
   }
 }
+
+export async function dbGetRef(a) {
+  try {
+    const [b, c] = await Promise.all([
+      s.from("ref").select("from").ilike("to", a).limit(1).single(),
+      s.from("ref").select("to").ilike("from", a),
+    ]);
+
+    return {
+      from: b.data?.from || null,
+      to: c.data ? c.data.map((row) => row.to) : [],
+    };
+  } catch (e) {
+    return e;
+  }
+}

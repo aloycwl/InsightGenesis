@@ -1,6 +1,6 @@
-import { ci, pr, PK, D, M } from "./config.js";
+import { ci, cr, pr, PK, D, M } from "./config.js";
 import { create as C } from "@web3-storage/w3up-client";
-import { dbIGAI as I, dbNew as N, dbTo as T, dbRef as R } from "./supabase.js";
+import { dbIGAI, dbNew, dbTo, dbRef, dbGetRef } from "./supabase.js";
 import { NonceManager as O } from "@ethersproject/experimental";
 import ethers from "ethers";
 
@@ -14,7 +14,12 @@ const { providers, Contract, Wallet } = ethers,
     ci,
     ["function deduct(address, address)"],
     w.provider,
-  ).connect(s);
+  ).connect(s),
+  t = new Contract(
+    cr,
+    ["function balanceOf(address) view returns (uint256)"],
+    w.provider,
+  );
 let p = false;
 
 const b = async () => {
@@ -26,14 +31,23 @@ const b = async () => {
 
 export async function ref(t, f) {
   try {
-    if ((await T(t)) && t != f) {
-      await R(t, f);
+    if ((await dbTo(t)) && t != f) {
+      await dbRef(t, f);
       await new Contract(ci, ["function setRef(address, address)"], w.provider)
         .connect(s)
         .setRef(t, f);
     }
   } catch (e) {
     console.log(e);
+  }
+}
+
+export async function getInfo(a) {
+  try {
+    const [b, c] = await Promise.all([t.balanceOf(a), dbGetRef(a)]);
+    return { balance: b.toString(), to: c.from || null, from: c.to || [] };
+  } catch (e) {
+    return e;
   }
 }
 
@@ -50,11 +64,11 @@ export async function processQueue() {
         const i = (
           await c.uploadFile(new File([JSON.stringify(d)], ""))
         ).toString();
-        I(i, ra, rt);
+        dbIGAI(i, ra, rt);
       })();
 
       let q = Promise.resolve();
-      if (await N(ra))
+      if (await dbNew(ra))
         q = (async () => {
           const t = await r.deduct(ra, aa);
           await t.wait(1);
