@@ -4,16 +4,19 @@ import { dbIGAI, dbNew, dbTo, dbRef, dbGetRef } from "./supabase.js";
 import { NonceManager as O } from "@ethersproject/experimental";
 import ethers from "ethers";
 
+let currentNonce = null;
+let nonceLock = Promise.resolve();
+
 const { providers, Contract, Wallet } = ethers,
   { JsonRpcProvider } = providers,
   w = new Wallet(PK, new JsonRpcProvider(pr)),
   s = new O(w),
-  q = [],
+  q = [], 
   c = await C(),
   r = new Contract(
     ci,
     ["function deduct(address, address)"],
-    w.provider,
+    w,
   ).connect(s),
   t = new Contract(
     cr,
@@ -51,6 +54,23 @@ export async function getInfo(a) {
   }
 }
 
+async function getNextNonce() {
+  await nonceLock;
+  let releaseLock;
+  nonceLock = new Promise((resolve) => { releaseLock = resolve; });
+  try {
+    if (currentNonce === null) {
+      currentNonce = await w.provider.getTransactionCount(w.address, "pending");
+      console.log("Fetched initial nonce:", currentNonce);
+    }
+    const nonceToUse = currentNonce;
+    currentNonce++;
+    return nonceToUse;
+  } finally {
+    releaseLock();
+  }
+}
+
 export async function processQueue() {
   if (p) return;
   p = true;
@@ -70,7 +90,8 @@ export async function processQueue() {
       let q = Promise.resolve();
       if (await dbNew(ra))
         q = (async () => {
-          const t = await r.deduct(ra, aa);
+          const nonce = await getNextNonce();
+          const t = await r.deduct(ra, aa, { nonce });
           await t.wait(1);
           return t;
         })();
