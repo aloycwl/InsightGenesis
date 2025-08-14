@@ -4,20 +4,16 @@ import { dbIGAI, dbNew, dbTo, dbRef, dbGetRef } from "./supabase.js";
 import { NonceManager as O } from "@ethersproject/experimental";
 import ethers from "ethers";
 
-let currentNonce = null;
+let n = null;
 let nonceLock = Promise.resolve();
 
 const { providers, Contract, Wallet } = ethers,
   { JsonRpcProvider } = providers,
   w = new Wallet(PK, new JsonRpcProvider(pr)),
   s = new O(w),
-  q = [], 
+  q = [],
   c = await C(),
-  r = new Contract(
-    ci,
-    ["function deduct(address, address)"],
-    w,
-  ).connect(s),
+  r = new Contract(ci, ["function deduct(address, address)"], w).connect(s),
   t = new Contract(
     cr,
     ["function balanceOf(address) view returns (uint256)"],
@@ -57,14 +53,16 @@ export async function getInfo(a) {
 async function getNextNonce() {
   await nonceLock;
   let releaseLock;
-  nonceLock = new Promise((resolve) => { releaseLock = resolve; });
+  nonceLock = new Promise((resolve) => {
+    releaseLock = resolve;
+  });
   try {
-    if (currentNonce === null) {
-      currentNonce = await w.provider.getTransactionCount(w.address, "pending");
-      console.log("Fetched initial nonce:", currentNonce);
+    if (n === null) {
+      n = await w.provider.getTransactionCount(w.address, "pending");
+      console.log("Fetched initial nonce:", n);
     }
-    const nonceToUse = currentNonce;
-    currentNonce++;
+    const nonceToUse = n;
+    n++;
     return nonceToUse;
   } finally {
     releaseLock();
@@ -98,6 +96,10 @@ export async function processQueue() {
 
       await Promise.all([p, q]);
     } catch (e) {
+      if (String(e).includes("Invalid nonce")) {
+        n = await w.provider.getTransactionCount(w.address, "pending");
+        console.warn("Nonce reset to", n);
+      }
       console.error(new Date().toISOString(), "Retrying...", e);
       q.push({ d, ra, rt, aa });
       await new Promise((r) => setTimeout(r, 3000));
