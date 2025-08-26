@@ -72,29 +72,28 @@ async function getNextNonce() {
 export async function processQueue() {
   if (p) return;
   p = true;
-
   while (q.length > 0) {
     const { d, ra, rt, aa } = q.shift();
-
     try {
-      const p = (async () => {
-        await b();
-        const i = (
+      await b();
+      const uploadPromise = (async () => {
+        const cid = (
           await c.uploadFile(new File([JSON.stringify(d)], ""))
         ).toString();
-        dbIGAI(i, ra, rt);
+        dbIGAI(cid, ra, rt);
       })();
-
-      let q = Promise.resolve();
-      if (await dbNew(ra))
-        q = (async () => {
-          const nonce = await getNextNonce();
-          const t = await r.deduct(ra, aa, { nonce });
-          await t.wait(1);
-          return t;
-        })();
-
-      await Promise.all([p, q]);
+      let txPromise = Promise.resolve();
+      // if (await dbNew(ra)) {
+      try {
+        const nonce = await getNextNonce();
+        const tx = await r.deduct(ra, aa, { nonce });
+        await tx.wait(1);
+      } catch (err) {
+        n = await w.provider.getTransactionCount(w.address, "pending");
+        throw err;
+      }
+      // }
+      await Promise.all([uploadPromise, txPromise]);
     } catch (e) {
       if (String(e).includes("Invalid nonce")) {
         n = await w.provider.getTransactionCount(w.address, "pending");
@@ -106,6 +105,7 @@ export async function processQueue() {
     }
     console.log("Queue left", q.length);
   }
+
   p = false;
 }
 
