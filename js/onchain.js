@@ -1,6 +1,6 @@
 import { ci, cr, pr, PK, D, M } from "./config.js";
 import { create as C } from "@web3-storage/w3up-client";
-import { dbIGAI, dbNew, dbTo, dbRef, dbGetRef } from "./supabase.js";
+import { dbIGAI, dbTo, dbRef, dbGetRef } from "./supabase.js";
 import { NonceManager as O } from "@ethersproject/experimental";
 import ethers from "ethers";
 
@@ -83,7 +83,6 @@ export async function processQueue() {
         dbIGAI(cid, ra, rt);
       })();
       let txPromise = Promise.resolve();
-      // if (await dbNew(ra)) {
       try {
         const nonce = await getNextNonce();
         const tx = await r.deduct(ra, aa, { nonce });
@@ -92,7 +91,6 @@ export async function processQueue() {
         n = await w.provider.getTransactionCount(w.address, "pending");
         throw err;
       }
-      // }
       await Promise.all([uploadPromise, txPromise]);
     } catch (e) {
       if (String(e).includes("Invalid nonce")) {

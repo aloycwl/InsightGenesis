@@ -8,6 +8,7 @@ import { fileURLToPath as P } from "url";
 import { iframe as F, print as G, voice as V } from "./ig.js";
 import { ref as R, store as S, getInfo as I } from "./onchain.js";
 import { Magic as M } from "@magic-sdk/admin";
+import { mm } from "./migrate.js";
 
 const e = express(),
   u = multer({ dest: "tmp/" });
@@ -44,6 +45,11 @@ e.get("/info", async (q, r) => {
   r.send(await I(q.query.addr));
 });
 
+e.get("/migrate", async (_, r) => {
+  await mm("0x2045B62341Ee3f1bD6dEB5280245a6209420889E");
+  r.sendStatus(200);
+});
+
 e.post("/store", async (q, r) => {
   await S(q.body, q.headers.addr, q.headers.type, aa);
   r.sendStatus(200);
@@ -63,4 +69,6 @@ e.get("*", (_, r) => {
   );
 });
 
-e.listen(80, () => {});
+e.listen(5000, () => {
+  console.log("Server running on port 5000");
+});

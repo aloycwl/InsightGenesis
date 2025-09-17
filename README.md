@@ -110,5 +110,6 @@ Returned
 
 
 ## Deployed in L1X
-Insight contract: [0x7d1fe42532cEE53A23cc266c06Ac55e65b0797a9](https://l1xapp.com/explorer/address/v2/0x7d1fe42532cee53a23cc266c06ac55e65b0797a9)\
-IGAIr contract: [0x0C1A6816C7C59C2876624d0AdBd53Eb9bb6291bc](https://l1xapp.com/explorer/address/v2/0x0C1A6816C7C59C2876624d0AdBd53Eb9bb6291bc)
+Insight contract: [0x7d1fe42532cEE53A23cc266c06Ac55e65b0797a9](https://explorer.l1xapp.com/address/0x7d1fe42532cee53a23cc266c06ac55e65b0797a9)
+
+IGAIr contract: [0x0C1A6816C7C59C2876624d0AdBd53Eb9bb6291bc](https://explorer.l1xapp.com/0x0C1A6816C7C59C2876624d0AdBd53Eb9bb6291bc)

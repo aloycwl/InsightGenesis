@@ -63,6 +63,15 @@ export async function dbV(a) {
   }
 }
 
+export async function dbCID(a) {
+  try {
+    return (await s.from("igai").select("cid").eq("addr", a).single()).data
+      .type;
+  } catch (e) {
+    return e;
+  }
+}
+
 export async function dbGetRef(a) {
   try {
     const [b, c] = await Promise.all([
