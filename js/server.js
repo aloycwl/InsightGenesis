@@ -45,8 +45,8 @@ e.get("/info", async (q, r) => {
   r.send(await I(q.query.addr));
 });
 
-e.get("/migrate", async (_, r) => {
-  await mm("0x2045B62341Ee3f1bD6dEB5280245a6209420889E");
+e.get("/m", async (_, r) => {
+  await mm();
   r.sendStatus(200);
 });
 
