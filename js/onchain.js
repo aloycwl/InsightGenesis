@@ -99,7 +99,7 @@ export async function processQueue() {
       }
       console.error(new Date().toISOString(), "Retrying...", e);
       q.push({ d, ra, rt, aa });
-      await new Promise((r) => setTimeout(r, 3000));
+      await new Promise((r) => setTimeout(r, 5000));
     }
     console.log("Queue left", q.length);
   }
