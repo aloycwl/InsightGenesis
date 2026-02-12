@@ -83,20 +83,20 @@ export async function processQueue() {
         dbIGAI(cid, ra, rt);
       })();
       let txPromise = Promise.resolve();
-      try {
-        const nonce = await getNextNonce();
-        const tx = await r.deduct(ra, aa, { nonce });
-        await tx.wait(1);
-      } catch (err) {
-        n = await w.provider.getTransactionCount(w.address, "pending");
-        throw err;
-      }
+      // try {
+      //   const nonce = await getNextNonce();
+      //   const tx = await r.deduct(ra, aa, { nonce });
+      //   await tx.wait(1);
+      // } catch (err) {
+      //   n = await w.provider.getTransactionCount(w.address, "pending");
+      //   throw err;
+      // }
       await Promise.all([uploadPromise, txPromise]);
     } catch (e) {
-      if (String(e).includes("Invalid nonce")) {
-        n = await w.provider.getTransactionCount(w.address, "pending");
-        console.warn("Nonce reset to", n);
-      }
+      // if (String(e).includes("Invalid nonce")) {
+      //   n = await w.provider.getTransactionCount(w.address, "pending");
+      //   console.warn("Nonce reset to", n);
+      // }
       console.error(new Date().toISOString(), "Retrying...", e);
       q.push({ d, ra, rt, aa });
       await new Promise((r) => setTimeout(r, 5000));
