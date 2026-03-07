@@ -110,38 +110,51 @@ export async function voice(f, v, a, r) {
     const p = `tmp/${n}`;
     const d = new FormData();
 
+    console.log("Starting voice analysis...");
+
+    // Convert audio to AAC
     await X(ffmpegPath, ["-i", f.path, "-c:a", "aac", p]);
 
+    console.log("Audio converted:", p);
+
+    // Prepare upload form
     d.append("audio", fs.createReadStream(p));
     d.append("isSendingWebHookToInstitution", "false");
     d.append("audioServiceType", await D(v));
     d.append("channelType", "0");
 
+    // Remove original upload
     fs.unlink(f.path, () => {});
 
     const h = await auth();
 
-    const upload = await fetch(`${I}upload-file/audio`, {
-      method: "POST",
-      headers: h,
-      body: d,
+    console.log("Uploading audio to InsightGenie...");
+
+    // Upload audio
+    const uploadRes = await axios.post(`${I}upload-file/audio`, d, {
+      headers: {
+        ...h,
+        ...d.getHeaders(),
+      },
     });
 
-    const uploadResult = await upload.json();
-    const s = uploadResult.id;
+    const s = uploadRes.data.id;
 
-    console.log("Audio uploaded. Job ID:", s);
+    if (!s) {
+      throw new Error("Upload failed: no job id returned");
+    }
 
-    let t;
+    console.log("Upload successful. Job ID:", s);
+
+    // Poll for result
+    let t = null;
     let attempts = 0;
-    const maxAttempts = 60;
+    const maxAttempts = 60; // 2 minutes max
 
     while (attempts < maxAttempts) {
-      const j = await (
-        await fetch(`${I}get-score?id=${s}`, { headers: h })
-      ).json();
+      const j = (await axios.get(`${I}get-score?id=${s}`, { headers: h })).data;
 
-      console.log("Polling:", j);
+      console.log("Polling result:", j);
 
       if (j.scoreId) {
         t = j;
@@ -149,18 +162,25 @@ export async function voice(f, v, a, r) {
       }
 
       attempts++;
+
       await new Promise((resolve) => setTimeout(resolve, 2000));
     }
 
     if (!t) {
+      console.error("Voice analysis timeout");
+
       return r.status(504).json({
         success: false,
         message: "Voice analysis timed out",
       });
     }
 
-    O(t, a, v, aa);
+    console.log("Voice analysis complete");
 
+    // Store on-chain
+    await O(t, a, v, aa);
+
+    // Clean up converted file
     fs.unlink(p, () => {});
 
     return r.json({
