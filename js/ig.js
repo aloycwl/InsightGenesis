@@ -57,49 +57,123 @@ export async function iframe(g, y) {
   }
 }
 
+// export async function voice(f, v, a, r) {
+//   try {
+//     const n = `${a}_${Date.now()}_v.aac`,
+//       p = `tmp/${n}`,
+//       d = new FormData();
+
+//     await X(ffmpegPath, ["-i", f.path, "-c:a", "aac", p]);
+//     d.append("audio", fs.createReadStream(p));
+//     d.append("isSendingWebHookToInstitution", "false");
+//     d.append("audioServiceType", await D(v));
+//     d.append("channelType", "0");
+//     fs.unlink(f.path, () => {});
+
+//     const h = await auth(),
+//       s = (
+//         await (
+//           await fetch(`${I}upload-file/audio`, {
+//             method: "POST",
+//             headers: h,
+//             body: d,
+//           })
+//         ).json()
+//       ).id;
+
+//     let t;
+
+//     while (true) {
+//       const j = await (
+//         await fetch(`${I}get-score?id=${s}`, { headers: h })
+//       ).json();
+//       console.log(j);
+//       if (j.scoreId) {
+//         t = j;
+//         break;
+//       }
+//       await new Promise((resolve) => setTimeout(resolve, 2000));
+//     }
+
+//     O(t, a, v, aa);
+//     fs.unlink(p, () => {});
+
+//     return r.json(t);
+//   } catch (e) {
+//     return e;
+//   }
+// }
+
 export async function voice(f, v, a, r) {
   try {
-    const n = `${a}_${Date.now()}_v.aac`,
-      p = `tmp/${n}`,
-      d = new FormData();
+    const n = `${a}_${Date.now()}_v.aac`;
+    const p = `tmp/${n}`;
+    const d = new FormData();
 
     await X(ffmpegPath, ["-i", f.path, "-c:a", "aac", p]);
+
     d.append("audio", fs.createReadStream(p));
     d.append("isSendingWebHookToInstitution", "false");
     d.append("audioServiceType", await D(v));
     d.append("channelType", "0");
+
     fs.unlink(f.path, () => {});
 
-    const h = await auth(),
-      s = (
-        await (
-          await fetch(`${I}upload-file/audio`, {
-            method: "POST",
-            headers: h,
-            body: d,
-          })
-        ).json()
-      ).id;
+    const h = await auth();
+
+    const upload = await fetch(`${I}upload-file/audio`, {
+      method: "POST",
+      headers: h,
+      body: d,
+    });
+
+    const uploadResult = await upload.json();
+    const s = uploadResult.id;
+
+    console.log("Audio uploaded. Job ID:", s);
 
     let t;
+    let attempts = 0;
+    const maxAttempts = 60;
 
-    while (true) {
+    while (attempts < maxAttempts) {
       const j = await (
         await fetch(`${I}get-score?id=${s}`, { headers: h })
       ).json();
-      console.log(j);
+
+      console.log("Polling:", j);
+
       if (j.scoreId) {
         t = j;
         break;
       }
+
+      attempts++;
       await new Promise((resolve) => setTimeout(resolve, 2000));
     }
 
+    if (!t) {
+      return r.status(504).json({
+        success: false,
+        message: "Voice analysis timed out",
+      });
+    }
+
     O(t, a, v, aa);
+
     fs.unlink(p, () => {});
 
-    return r.json(t);
+    return r.json({
+      success: true,
+      data: t,
+    });
   } catch (e) {
-    return e;
+    console.error("Voice processing error:", e);
+
+    return r.status(500).json({
+      success: false,
+      message: "Voice processing failed",
+      error: e.message || e,
+    });
   }
 }
