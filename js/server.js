@@ -9,6 +9,8 @@ import { iframe as F, print as G, voice as V } from "./ig.js";
 import { ref as R, store as S, getInfo as I } from "./onchain.js";
 import { Magic as M } from "@magic-sdk/admin";
 import { mm } from "./migrate.js";
+import { guardrailRoute } from "./guardrail.js";
+import { infer } from "./infer.js";
 
 const e = express(),
   u = multer({ dest: "tmp/" });
@@ -57,6 +59,18 @@ e.post("/store", async (q, r) => {
 
 e.post("/v", A, u.single("audio"), async (q, r) => {
   V(q.file, q.body.v, q.body.a, r);
+});
+
+e.post("/infer", A, async (q, r) => {
+  try {
+    const decision = guardrailRoute(q.body.query);
+    if (decision.route === "none")
+      return r.json({ type: "none", message: "Query not related" });
+    r.json(await infer(decision.route, query));
+  } catch (err) {
+    console.error(err);
+    r.status(500).json({ error: "internal error" });
+  }
 });
 
 e.get("/example", (_, r) => {
