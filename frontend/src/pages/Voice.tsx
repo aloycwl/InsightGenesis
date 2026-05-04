@@ -15,7 +15,7 @@ export default () => {
         }
         return prev - 1;
       });
-    }, 1000);
+    }, 1e3);
 
     const o = async () => {
       const s = await navigator.mediaDevices.getUserMedia({ audio: true }),
@@ -33,7 +33,7 @@ export default () => {
         f.append("a", localStorage.getItem("a") || "");
 
         const j = await (
-          await fetch("/v", {
+          await fetch("https://api.insightgenesis.ai/v", {
             method: "POST",
             body: f,
             headers: { auth: localStorage.getItem("s") || "" },
