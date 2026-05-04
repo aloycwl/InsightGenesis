@@ -1,5 +1,8 @@
 .env
 .deps
 .prettierrc.json
+.config
+.pythinlibs
+.upm
 node_modules
 tmp
