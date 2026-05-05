@@ -23,7 +23,7 @@
     "@magic-ext/oauth2": "^11.5.0",
     "@magic-sdk/admin": "^2.8.2",
     "@story-protocol/core-sdk": "^1.4.4",
-    "@supabase/supabase-js": "^2.105.1",
+    "@supabase/supabase-js": "^2.105.3",
     "@web3-storage/w3up-client": "^17.3.0",
     "axios": "^1.16.0",
     "cors": "^2.8.6",
