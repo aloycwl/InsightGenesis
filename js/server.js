@@ -63,13 +63,14 @@ e.post("/v", A, u.single("audio"), async (q, r) => {
 
 e.post("/infer", A, async (q, r) => {
   try {
-    const decision = guardrailRoute(q.body.query);
-    if (decision.route === "none")
-      return r.json({ type: "none", message: "Query not related" });
-    r.json(await infer(decision.route, query));
+    const query = q.body.query,
+      decision = guardrailRoute(query);
+    if (decision.route === "none") return r.send("Query unrelated");
+    const result = await infer(decision.route, query);
+    r.send(result);
   } catch (err) {
     console.error(err);
-    r.status(500).json({ error: "internal error" });
+    r.status(500).send("internal error");
   }
 });
 
@@ -85,4 +86,14 @@ e.get("*", (_, r) => {
 
 e.listen(5000, () => {
   console.log("Server running on port 5000");
+});
+
+e.use((err, _req, res, next) => {
+  console.error("Unhandled error:", err);
+
+  if (res.headersSent) return next(err);
+
+  res.status(500).json({
+    error: "Internal server error",
+  });
 });

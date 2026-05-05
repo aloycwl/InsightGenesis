@@ -6,9 +6,6 @@ export function guardrailRoute(query) {
 
   if (
     q.includes("average") ||
-    q.includes("avg") ||
-    q.includes("mean") ||
-    q.includes("trend") ||
     q.includes("correlation") ||
     q.includes("count") ||
     q.includes("how many")
@@ -16,12 +13,14 @@ export function guardrailRoute(query) {
     return { route: "neon" };
 
   if (
-    q.includes("similar") ||
-    q.includes("like") ||
-    q.includes("pattern") ||
-    q.includes("cluster") ||
-    q.includes("anomaly")
-  )
+      q.includes("high") ||
+      q.includes("low") ||
+      q.includes("similar") ||
+      q.includes("pattern") ||
+      q.includes("risk") ||
+      q.includes("stress") ||
+      q.includes("heart")
+    )
     return { route: "qdrant" };
 
   return { route: "none" };

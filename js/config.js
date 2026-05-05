@@ -14,7 +14,7 @@ export const su = "https://uxxfyiukhlsahcyszutt.supabase.co";
 export const D = "did:key:z6MkrP3iUSsWXTvYsVEHh7ZKEBnJ7smyut1Av13kw5d36oL3";
 export const M = "aloycwl@gmail.com";
 
-export const { GH, IK, IS, MA, PK, SB } = process.env;
+export const { GH, IK, IS, MA, PK, SB, QU, QK, DU, NK, HF } = process.env;
 
 // L1x mainnet
 // export const ci = "0x7d1fe42532cEE53A23cc266c06Ac55e65b0797a9";
