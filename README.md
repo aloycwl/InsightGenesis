@@ -109,6 +109,40 @@ Returned
 - from: the addresses brought in by ADDRESS
 
 
+## 7. Check remaining credits
+```curl
+curl -X GET https://api.insightgenesis.ai/credits \
+  -H "auth: <SECRET_KEY>"
+```
+SECRET_KEY - the key issued to you<br><br>
+Example
+```json
+{ "credit": 42 }
+```
+
+## 8. Get API call history
+```curl
+curl -X GET "https://api.insightgenesis.ai/history?page=1" \
+  -H "auth: <SECRET_KEY>"
+```
+SECRET_KEY - the key issued to you<br>
+PAGE - page number (50 records per page)<br><br>
+Example
+```json
+{
+  "page": 1,
+  "data": [
+    { "ip": "1.2.3.4", "endpoint": "/infer", "timestamp": "2026-05-10T12:00:00Z", "status_code": 200 },
+    { "ip": "1.2.3.4", "endpoint": "/iframe", "timestamp": "2026-05-10T11:30:00Z", "status_code": 200 }
+  ],
+  "hasMore": true
+}
+```
+Returned
+- page: current page number
+- data: array of log entries (max 50 per page)
+- hasMore: true if more pages exist
+
 ## Deployed in L1X
 Insight contract: [0x7d1fe42532cEE53A23cc266c06Ac55e65b0797a9](https://explorer.l1xapp.com/address/0x7d1fe42532cee53a23cc266c06ac55e65b0797a9)
 
