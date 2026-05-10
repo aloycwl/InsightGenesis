@@ -110,8 +110,8 @@ export const dbLog = async (q, r, next) => {
     }
   }
   r.on("finish", () => {
-    s.from("api_logs")
-      .insert([
+    Promise.resolve(
+      s.from("api_logs").insert([
         {
           key_id: q.keyId || null,
           ip: q.ip || q.connection?.remoteAddress || null,
@@ -119,7 +119,7 @@ export const dbLog = async (q, r, next) => {
           status_code: r.statusCode,
         },
       ])
-      .catch((e) => console.log(e));
+    ).catch((e) => console.log(e));
   });
   next();
 };
