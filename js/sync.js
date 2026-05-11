@@ -3,7 +3,14 @@ import pkg from 'pg';
 import { DU, QK, QU } from './config.js';
 
 const { Pool } = pkg;
-const pool = new Pool({ connectionString: DU });
+let pool = null;
+
+function getPool() {
+  if (!pool) {
+    pool = new Pool({ connectionString: DU });
+  }
+  return pool;
+}
 
 export function normalizeRecord(jsonData) {
   const vital = jsonData.vitalSigns || {};
@@ -126,7 +133,7 @@ export async function syncToNeonAndQdrant(rawPayload, cid, sourceId, createdAt) 
   ];
 
   try {
-    await pool.query(query, values);
+    await getPool().query(query, values);
   } catch (error) {
     console.error("Error inserting into Neon:", error);
   }

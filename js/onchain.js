@@ -77,25 +77,29 @@ export async function processQueue() {
     const { d, ra, rt, aa } = q.shift();
     try {
       await b();
-      const uploadPromise = (async () => {
-        const cid = (
+      let cid = null;
+      try {
+        cid = (
           await c.uploadFile(new File([JSON.stringify(d)], ""))
         ).toString();
+      } catch (uploadErr) {
+        console.error(new Date().toISOString(), "CID upload failed, skipping Supabase:", uploadErr);
+      }
+
+      if (cid) {
         const dbResult = await dbIGAI(cid, ra, rt);
         if (dbResult) {
-          await syncToNeonAndQdrant(d, cid, dbResult.id, dbResult.created_at);
+          syncToNeonAndQdrant(d, cid, dbResult.id, dbResult.created_at).catch(
+            (e) => console.error("Sync to Neon/Qdrant failed:", e)
+          );
         }
-      })();
-      let txPromise = Promise.resolve();
-      // try {
-      //   const nonce = await getNextNonce();
-      //   const tx = await r.deduct(ra, aa, { nonce });
-      //   await tx.wait(1);
-      // } catch (err) {
-      //   n = await w.provider.getTransactionCount(w.address, "pending");
-      //   throw err;
-      // }
-      await Promise.all([uploadPromise, txPromise]);
+      } else {
+        const fallbackId = crypto.randomUUID();
+        const fallbackCreatedAt = new Date().toISOString();
+        syncToNeonAndQdrant(d, null, fallbackId, fallbackCreatedAt).catch(
+          (e) => console.error("Sync to Neon/Qdrant failed:", e)
+        );
+      }
     } catch (e) {
       // if (String(e).includes("Invalid nonce")) {
       //   n = await w.provider.getTransactionCount(w.address, "pending");
