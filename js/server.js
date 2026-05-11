@@ -16,6 +16,7 @@ const e = express(),
   u = multer({ dest: "tmp/" });
 e.use(cors());
 e.use(express.json());
+e.set('trust proxy', true);
 e.use(L);
 e.use(
   express.static(

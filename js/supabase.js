@@ -114,7 +114,7 @@ export const dbLog = async (q, r, next) => {
       s.from("api_logs").insert([
         {
           key_id: q.keyId || null,
-          ip: q.ip || q.connection?.remoteAddress || null,
+          ip: (q.ip || q.connection?.remoteAddress || "").replace(/^::ffff:/, "") || null,
           endpoint: q.path,
           status_code: r.statusCode,
         },
