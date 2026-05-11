@@ -22,9 +22,11 @@ export const dbAuth = async (q, r, next) => {
 
 export async function dbIGAI(a, b, c) {
   try {
-    await s.from("igai").insert([{ cid: a, addr: b, type: c }]);
+    const { data } = await s.from("igai").insert([{ cid: a, addr: b, type: c }]).select("id, created_at").single();
+    return data;
   } catch (e) {
     console.log(e);
+    return null;
   }
 }
 

@@ -1,6 +1,7 @@
 import { ci, cr, pr, PK, D, M } from "./config.js";
 import { create as C } from "@web3-storage/w3up-client";
 import { dbIGAI, dbTo, dbRef, dbGetRef } from "./supabase.js";
+import { syncToNeonAndQdrant } from "./sync.js";
 import { NonceManager as O } from "@ethersproject/experimental";
 import ethers from "ethers";
 
@@ -80,7 +81,10 @@ export async function processQueue() {
         const cid = (
           await c.uploadFile(new File([JSON.stringify(d)], ""))
         ).toString();
-        dbIGAI(cid, ra, rt);
+        const dbResult = await dbIGAI(cid, ra, rt);
+        if (dbResult) {
+          await syncToNeonAndQdrant(d, cid, dbResult.id, dbResult.created_at);
+        }
       })();
       let txPromise = Promise.resolve();
       // try {
