@@ -91,7 +91,7 @@ Explain clearly (non-medical advice): 1. what this means 2. key insight 3. any p
   const res = await axios.post(
     "https://integrate.api.nvidia.com/v1/chat/completions",
     {
-      model: "z-ai/glm4.7",
+      model: "deepseek-ai/deepseek-v4-flash",
       messages: [{ role: "user", content: prompt }],
       temperature: 1,
       top_p: 1,
