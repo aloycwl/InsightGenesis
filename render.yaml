@@ -11,6 +11,6 @@ services:
   - key: PJ
     sync: false
   region: singapore
-  buildCommand: npm install
+  buildCommand: npm install && npm --prefix frontend install && npm run build
   startCommand: npm start
 version: "1"
