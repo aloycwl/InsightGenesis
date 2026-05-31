@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "build": "npm --prefix frontend run build",
-    "start": "NODE_OPTIONS='--import dd-trace/initialize.mjs' node js/server.js"
+    "start": "node js/server.js"
   },
   "repository": {
     "type": "git",
@@ -27,7 +27,6 @@
     "@web3-storage/w3up-client": "^17.3.0",
     "axios": "^1.16.0",
     "cors": "^2.8.6",
-    "dd-trace": "^5.103.0",
     "dotenv": "^16.6.1",
     "ethers": "^5.8.0",
     "execa": "^9.6.1",

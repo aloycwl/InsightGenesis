@@ -1,6 +1,7 @@
 import axios from 'axios';
 import pkg from 'pg';
 import { DU, QK, QU } from './config.js';
+import { error, serializeError } from './logger.js';
 
 const { Pool } = pkg;
 let pool = null;
@@ -135,7 +136,7 @@ export async function syncToNeonAndQdrant(rawPayload, cid, sourceId, createdAt) 
   try {
     await getPool().query(query, values);
   } catch (error) {
-    console.error("Error inserting into Neon:", error);
+    error("neon_insert_error", { error: serializeError(error) });
   }
 
   // Insert into Qdrant
@@ -180,6 +181,6 @@ export async function syncToNeonAndQdrant(rawPayload, cid, sourceId, createdAt) 
       }
     );
   } catch (error) {
-    console.error("Error inserting into Qdrant:", error);
+    error("qdrant_insert_error", { error: serializeError(error) });
   }
 }

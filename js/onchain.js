@@ -2,6 +2,7 @@ import { ci, cr, pr, PK, D, M } from "./config.js";
 import { create as C } from "@web3-storage/w3up-client";
 import { dbIGAI, dbTo, dbRef, dbGetRef } from "./supabase.js";
 import { syncToNeonAndQdrant } from "./sync.js";
+import { error, info, serializeError } from "./logger.js";
 import { NonceManager as O } from "@ethersproject/experimental";
 import ethers from "ethers";
 
@@ -38,7 +39,7 @@ export async function ref(t, f) {
         .setRef(t, f);
     }
   } catch (e) {
-    console.log(e);
+    error("ref_set_error", { error: serializeError(e) });
   }
 }
 
@@ -60,7 +61,7 @@ async function getNextNonce() {
   try {
     if (n === null) {
       n = await w.provider.getTransactionCount(w.address, "pending");
-      console.log("Fetched initial nonce:", n);
+      info("initial_nonce_fetched", { nonce: n });
     }
     const nonceToUse = n;
     n++;
@@ -83,33 +84,29 @@ export async function processQueue() {
           await c.uploadFile(new File([JSON.stringify(d)], ""))
         ).toString();
       } catch (uploadErr) {
-        console.error(new Date().toISOString(), "CID upload failed, skipping Supabase:", uploadErr);
+        error("cid_upload_failed", { error: serializeError(uploadErr) });
       }
 
       if (cid) {
         const dbResult = await dbIGAI(cid, ra, rt);
         if (dbResult) {
           syncToNeonAndQdrant(d, cid, dbResult.id, dbResult.created_at).catch(
-            (e) => console.error("Sync to Neon/Qdrant failed:", e)
+            (e) => error("sync_neon_qdrant_error", { error: serializeError(e) })
           );
         }
       } else {
         const fallbackId = crypto.randomUUID();
         const fallbackCreatedAt = new Date().toISOString();
         syncToNeonAndQdrant(d, null, fallbackId, fallbackCreatedAt).catch(
-          (e) => console.error("Sync to Neon/Qdrant failed:", e)
+          (e) => error("sync_neon_qdrant_error", { error: serializeError(e) })
         );
       }
     } catch (e) {
-      // if (String(e).includes("Invalid nonce")) {
-      //   n = await w.provider.getTransactionCount(w.address, "pending");
-      //   console.warn("Nonce reset to", n);
-      // }
-      console.error(new Date().toISOString(), "Retrying...", e);
+      error("queue_processing_retry", { error: serializeError(e) });
       q.push({ d, ra, rt, aa });
       await new Promise((r) => setTimeout(r, 5000));
     }
-    console.log("Queue left", q.length);
+    info("queue_remaining", { remaining: q.length });
   }
 
   p = false;

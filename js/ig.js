@@ -2,6 +2,7 @@ import axios from "axios";
 import fetch from "node-fetch";
 import ffmpegPath from "ffmpeg-static";
 import fs from "fs";
+import { info } from "./logger.js";
 import FormData from "form-data";
 import { dbV as D } from "./supabase.js";
 import { execa as X } from "execa";
@@ -87,7 +88,7 @@ export async function voice(f, v, a, r) {
       const j = await (
         await fetch(`${I}get-score?id=${s}`, { headers: h })
       ).json();
-      console.log(j);
+      info("ig_score_poll", { score: j });
       if (j.scoreId) {
         t = j;
         break;

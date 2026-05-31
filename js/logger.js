@@ -1,5 +1,8 @@
 import axios from "axios";
 
+const nativeStdout = process.stdout.write.bind(process.stdout);
+const nativeStderr = process.stderr.write.bind(process.stderr);
+
 const {
   DD_API_KEY,
   DD_SITE = "datadoghq.com",
@@ -30,8 +33,8 @@ function baseLog(level, message, attrs = {}) {
 async function sendBatch(batch) {
   if (!DD_API_KEY) {
     for (const entry of batch) {
-      if (entry.level === "error") console.error(entry);
-      else console.log(entry);
+      const writer = entry.level === "error" ? nativeStderr : nativeStdout;
+      writer(`${JSON.stringify(entry)}\n`);
     }
     return;
   }
@@ -45,10 +48,10 @@ async function sendBatch(batch) {
       timeout: 5000,
     });
   } catch (err) {
-    console.error("Datadog log upload failed", err?.message || err);
+    nativeStderr(`Datadog log upload failed ${err?.message || err}\n`);
     for (const entry of batch) {
-      if (entry.level === "error") console.error(entry);
-      else console.log(entry);
+      const writer = entry.level === "error" ? nativeStderr : nativeStdout;
+      writer(`${JSON.stringify(entry)}\n`);
     }
   }
 }
@@ -90,6 +93,13 @@ export function warn(message, attrs = {}) {
 
 export function error(message, attrs = {}) {
   enqueue(baseLog("error", message, attrs));
+}
+
+export function serializeError(err) {
+  if (err instanceof Error) {
+    return { message: err.message, stack: err.stack, name: err.name };
+  }
+  return { message: String(err) };
 }
 
 export function requestLogger(req, res, next) {

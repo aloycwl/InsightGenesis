@@ -1,4 +1,5 @@
 import { dbCID } from "./supabase.js";
+import { error, info, serializeError } from "./logger.js";
 
 let cid;
 
@@ -6,10 +7,10 @@ export async function mm(a) {
   try {
     for (let i = 0; i < a; i++) {
       cid = await dbCID();
-      console.log(cid);
+      info("migration_cid_loaded", { cid });
     }
-  } catch (error) {
-    console.error("Error during migration and minting:", error);
-    return { success: false, error: error.message };
+  } catch (err) {
+    error("migration_mint_error", { error: serializeError(err) });
+    return { success: false, error: err.message };
   }
 }
