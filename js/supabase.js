@@ -1,5 +1,6 @@
 import { createClient as cc } from "@supabase/supabase-js";
 import { su, SB } from "./config.js";
+import { error } from "./logger.js";
 
 const s = cc(su, SB);
 
@@ -16,7 +17,7 @@ export const dbAuth = async (q, r, next) => {
       .eq("k", k);
     next();
   } catch (e) {
-    console.log(e);
+    error("db_auth_error", { error: e?.message || String(e) });
   }
 };
 
@@ -25,7 +26,7 @@ export async function dbIGAI(a, b, c) {
     const { data } = await s.from("igai").insert([{ cid: a, addr: b, type: c }]).select("id, created_at").single();
     return data;
   } catch (e) {
-    console.log(e);
+    error("db_igai_insert_error", { error: e?.message || String(e) });
     return null;
   }
 }
@@ -34,7 +35,7 @@ export async function dbRef(a, b) {
   try {
     await s.from("ref").insert([{ to: a, from: b }]);
   } catch (e) {
-    console.log(e);
+    error("db_ref_insert_error", { error: e?.message || String(e) });
   }
 }
 
@@ -108,7 +109,7 @@ export const dbLog = async (q, r, next) => {
       const { data } = await s.from("keys").select("id").eq("k", q.headers.auth).single();
       if (data) q.keyId = data.id;
     } catch (e) {
-      console.log(e);
+      error("db_log_key_lookup_error", { error: e?.message || String(e) });
     }
   }
   r.on("finish", () => {
@@ -121,7 +122,7 @@ export const dbLog = async (q, r, next) => {
           status_code: r.statusCode,
         },
       ])
-    ).catch((e) => console.log(e));
+    ).catch((e) => error("db_log_insert_error", { error: e?.message || String(e) }));
   });
   next();
 };
@@ -131,7 +132,7 @@ export async function dbCredits(k) {
     const { data } = await s.from("keys").select("credit").eq("k", k).single();
     return data ? data.credit : null;
   } catch (e) {
-    console.log(e);
+    error("db_credits_error", { error: e?.message || String(e) });
     return null;
   }
 }
@@ -150,7 +151,7 @@ export async function dbHistory(k, page) {
     const hasMore = data && data.length === 51;
     return { data: hasMore ? data.slice(0, 50) : data, hasMore };
   } catch (e) {
-    console.log(e);
+    error("db_history_error", { error: e?.message || String(e) });
     return null;
   }
 }

@@ -11,6 +11,7 @@ import { Magic as M } from "@magic-sdk/admin";
 import { mm } from "./migrate.js";
 import { guardrailRoute } from "./guardrail.js";
 import { infer } from "./infer.js";
+import { requestLogger, info, error } from "./logger.js";
 
 const e = express(),
   u = multer({ dest: "tmp/" });
@@ -18,6 +19,7 @@ e.use(cors());
 e.use(express.json());
 e.set('trust proxy', true);
 e.use(L);
+e.use(requestLogger);
 e.use(
   express.static(
     path.join(path.dirname(P(import.meta.url)), "../frontend/build"),
@@ -71,7 +73,7 @@ e.post("/infer", A, async (q, r) => {
     const result = await infer(decision.route, query);
     r.send(result);
   } catch (err) {
-    console.error(err);
+    error("infer_route_error", { error: err?.message || String(err) });
     r.status(500).send("internal error");
   }
 });
@@ -104,11 +106,11 @@ e.get("*", (_, r) => {
 });
 
 e.listen(5000, () => {
-  console.log("Server running on port 5000");
+  info("server_started", { port: 5000 });
 });
 
 e.use((err, _req, res, next) => {
-  console.error("Unhandled error:", err);
+  error("unhandled_error", { error: err?.message || String(err) });
 
   if (res.headersSent) return next(err);
 
