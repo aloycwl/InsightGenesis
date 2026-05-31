@@ -36,6 +36,7 @@
     "form-data": "^4.0.5",
     "magic-sdk": "^29.4.2",
     "multer": "^2.1.1",
+    "node-fetch": "^3.3.2",
     "pg": "^8.20.0",
     "punycode": "^2.3.1",
     "whatwg-url": "^14.2.0"
